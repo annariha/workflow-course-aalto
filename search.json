@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "materials.html",
+    "href": "materials.html",
+    "title": "Materials",
+    "section": "",
+    "text": "Session 1\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 2\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 3\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 4\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 5\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 6\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 7\n\nRequired Reading\n\n\nRecommended"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Bayesian Workflows course",
+    "section": "",
+    "text": "This is the webpage for “CS-E407520 Special Course in Machine Learning and Data Science: Bayesian Workflows” - a seminar on Bayesian workflows at Aalto University targeted at master students and doctoral researchers.\n\nPrerequisites\nSuccessful completion of CS-E5710 Bayesian Data Analysis or otherwise previous knowledge in Bayesian data analysis on a similar level is required.\nThe number of participants is limited to 30.\n\n\nAssessment\n\n5 ECTS\nPass/Fail"
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule 2024",
+    "section": "",
+    "text": "The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:15-16:00 in R030/A133 T5.\n\n\n\n\nTopics\nReadings\nDate\n\n\n\n\nSession 1\n1\n2\n22 April 2024\n\n\nSession 2\n1\n2\n29 April 2024\n\n\nSession 3\n1\n2\n06 May 2024\n\n\nSession 4\n1\n2\n13 May 2024\n\n\nSession 5\n1\n2\n20 May 2024\n\n\nSession 6\n1\n2\n27 May 2024\n\n\nSession 7\n1\n2\n3 June 2024"
+  }
+]
