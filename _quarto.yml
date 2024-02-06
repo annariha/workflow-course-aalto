@@ -7,7 +7,12 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: schedule.qmd
+        text: Schedule 
+      - href: materials.qmd
+        text: Materials
+      #- text: "FAQ"
+      # href: FAQ.html
 
 format:
   html:
