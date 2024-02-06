@@ -1,10 +1,8 @@
 ---
-title: "workflow-course-aalto"
+title: "Bayesian Workflows course"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+This is the webpage for a seminar on Bayesian workflows taught as "Special Course in Machine Learning and Data Science: Bayesian Workflows" at Aalto University.
 
 ```{r}
 1 + 1
