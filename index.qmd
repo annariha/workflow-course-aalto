@@ -2,8 +2,15 @@
 title: "Bayesian Workflows course"
 ---
 
-This is the webpage for a seminar on Bayesian workflows taught as "Special Course in Machine Learning and Data Science: Bayesian Workflows" at Aalto University.
+This is the webpage for a seminar on Bayesian workflows "CS-E407520 Special Course in Machine Learning and Data Science: Bayesian Workflows" at Aalto University targeted at master students and doctoral researchers. 
 
-```{r}
-1 + 1
-```
+The number of participants is limited to 30. 
+
+### Prerequisites 
+
+Successful completion of [CS-E5710 Bayesian Data Analysis](https://avehtari.github.io/BDA_course_Aalto/index.html) or otherwise previous knowledge in Bayesian data analysis on a similar level is required. 
+
+### Assessment  
+
+- 5 ECTS
+- Pass/Fail 
