@@ -5,14 +5,10 @@ website:
   title: "Bayesian Workflows course"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
       - href: schedule.qmd
         text: Schedule 
       - href: materials.qmd
         text: Materials
-      #- text: "FAQ"
-      # href: FAQ.html
 
 format:
   html:
