@@ -2,38 +2,44 @@
 title: "Materials"
 ---
 
-### Session 1
+### Session 1: Introduction to Bayesian Workflows
 
-##### Required Reading 
-##### Recommended 
+##### Learning Outcomes
+##### Required Reading
+##### Recommended Reading
 
-### Session 2
+### Session 2: Choosing an Initial Model
 
-##### Required Reading 
-##### Recommended 
+##### Learning Outcomes
+##### Required Reading
+##### Recommended Reading
 
-### Session 3
+### Session 3: Prior Choices
 
-##### Required Reading 
-##### Recommended 
+##### Learning Outcomes
+##### Required Reading
+##### Recommended Reading
 
-### Session 4
+### Session 4: Posterior Predictive Checks & Calibration
 
-##### Required Reading 
-##### Recommended 
+##### Learning Outcomes
+##### Required Reading
+##### Recommended Reading
 
-### Session 5 
+### Session 5: Extending Models and Model Selection
 
-##### Required Reading 
-##### Recommended 
+##### Learning Outcomes
+##### Required Reading
+##### Recommended Reading
 
-### Session 6 
+### Session 6: Applying and Debugging Models in Stan
 
-##### Required Reading 
-##### Recommended 
+##### Learning Outcomes
+##### Required Reading
+##### Recommended Reading
 
-### Session 7 
+### Session 7: Summary & Presentations
 
-##### Required Reading 
-##### Recommended 
-
+##### Learning Outcomes
+##### Required Reading
+##### Recommended Reading
