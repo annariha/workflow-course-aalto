@@ -2,11 +2,11 @@ project:
   type: website
 
 website:
-  title: "Bayesian Workflows course"
+  title: "Bayesian Workflows - Advanced Course"
   navbar:
     left:
       - href: schedule.qmd
-        text: Schedule 
+        text: Schedule
       - href: materials.qmd
         text: Materials
 
