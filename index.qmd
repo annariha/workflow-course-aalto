@@ -20,3 +20,4 @@ You will be assessed on your understanding of each of the workflow steps, the ro
 
 - 5 ECTS
 - Pass/Fail
+- workflow diary 
