@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule 2024",
+    "section": "",
+    "text": "The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:15-16:00 in R030/A133 T5.\n\n\n\n\nTopics\nReadings\nDate\n\n\n\n\nSession 1\n1\n2\n22 April 2024\n\n\nSession 2\n1\n2\n29 April 2024\n\n\nSession 3\n1\n2\n06 May 2024\n\n\nSession 4\n1\n2\n13 May 2024\n\n\nSession 5\n1\n2\n20 May 2024\n\n\nSession 6\n1\n2\n27 May 2024\n\n\nSession 7\n1\n2\n3 June 2024"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Bayesian Workflows - Advanced Seminar",
@@ -12,12 +19,5 @@
     "title": "Materials",
     "section": "",
     "text": "Session 1: Introduction to Bayesian Workflows\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 2: Choosing an Initial Model\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 3: Prior Choices\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 4: Posterior Predictive Checks & Calibration\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 5: Extending Models and Model Selection\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 6: Applying and Debugging Models in Stan\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 7: Summary & Presentations\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading"
-  },
-  {
-    "objectID": "schedule.html",
-    "href": "schedule.html",
-    "title": "Schedule 2024",
-    "section": "",
-    "text": "The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:15-16:00 in R030/A133 T5.\n\n\n\n\nTopics\nReadings\nDate\n\n\n\n\nSession 1\n1\n2\n22 April 2024\n\n\nSession 2\n1\n2\n29 April 2024\n\n\nSession 3\n1\n2\n06 May 2024\n\n\nSession 4\n1\n2\n13 May 2024\n\n\nSession 5\n1\n2\n20 May 2024\n\n\nSession 6\n1\n2\n27 May 2024\n\n\nSession 7\n1\n2\n3 June 2024"
   }
 ]
