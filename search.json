@@ -1,24 +1,17 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "Schedule",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Bayesian Workflows - Advanced Seminar",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "This is the webpage for “CS-E407520 Special Course in Machine Learning and Data Science: Bayesian Workflows” - a seminar on Bayesian workflows at Aalto University targeted at master students and doctoral researchers.\nIn this seminar, we dive into some of the essential steps of Bayesian modelling workflows and their application to practical analysis problems. We will be exploring how these Bayesian modelling workflows can be applied to a range of research questions, as well as common issues and problems that you might encounter. Students are strongly encouraged to bring their own analysis/modelling problem to apply each step of the workflow.\nYou will become familiar with available software tools that can support different aspects of modelling like prior sensitivity checks, choosing regularising priors, or using model comparison and model averaging techniques. You will gain hands-on experience working with your own modelling problem.\n\nPrerequisites\nSuccessful completion of CS-E5710 Bayesian Data Analysis or equivalent competence/experience with Bayesian data analysis.\nThe number of participants is limited to 30.\n\n\nAssessment\nYou will be assessed on your understanding of each of the workflow steps, the role they play in the Bayesian workflow, and to apply them to real-world data.\n\n5 ECTS\nPass/Fail"
   },
   {
     "objectID": "materials.html",
     "href": "materials.html",
     "title": "Materials",
     "section": "",
-    "text": "Session 1\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 2\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 3\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 4\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 5\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 6\n\nRequired Reading\n\n\nRecommended\n\n\n\nSession 7\n\nRequired Reading\n\n\nRecommended"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Bayesian Workflows course",
-    "section": "",
-    "text": "This is the webpage for “CS-E407520 Special Course in Machine Learning and Data Science: Bayesian Workflows” - a seminar on Bayesian workflows at Aalto University targeted at master students and doctoral researchers.\nIn this seminar, we dive into some of the essential steps of Bayesian modelling workflows. You will become familiar with available software tools that can support different aspects of modelling like prior sensitivity checks, choosing regularising priors or using model comparison and model averaging techniques. You will gain hands-on experience working with your own modelling problem.\n\nPrerequisites\nSuccessful completion of CS-E5710 Bayesian Data Analysis or otherwise previous knowledge in Bayesian data analysis on a similar level is required.\nThe number of participants is limited to 30.\n\n\nAssessment\n\n5 ECTS\nPass/Fail"
+    "text": "Session 1: Introduction to Bayesian Workflows\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 2: Choosing an Initial Model\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 3: Prior Choices\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 4: Posterior Predictive Checks & Calibration\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 5: Extending Models and Model Selection\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 6: Applying and Debugging Models in Stan\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading\n\n\n\nSession 7: Summary & Presentations\n\nLearning Outcomes\n\n\nRequired Reading\n\n\nRecommended Reading"
   },
   {
     "objectID": "schedule.html",
