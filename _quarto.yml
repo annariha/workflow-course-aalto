@@ -5,10 +5,8 @@ website:
   title: "Bayesian Workflows - Advanced Course"
   navbar:
     left:
-      - href: schedule.qmd
-        text: Schedule
       - href: materials.qmd
-        text: Materials
+        text: Schedule and Content
 
 format:
   html:

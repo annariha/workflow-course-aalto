@@ -1,45 +1,93 @@
 ---
-title: "Materials"
+title: "Course Schedule 2024"
+---
+
+The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:15-16:00 in R030/A133 T5.
+
+|  | Topics | Readings| Date |
+|---------|:-----|:-----|:------:|
+| Session 1 | 1 | 2 | 22 April 2024 |
+| Session 2 | 1 | 2 | 29 April 2024 |
+| Session 3 | 1 | 2 | 06 May 2024 |
+| Session 4 | 1 | 2 | 13 May 2024 |
+| Session 5 | 1 | 2 | 20 May 2024 |
+| Session 6 | 1 | 2 | 27 May 2024 |
+| Session 7 | 1 | 2 | 3 June 2024 |
+
+---
+title: "Course Content 2024"
 ---
 
 ### Session 1: Introduction to Bayesian Workflows
 
 ##### Learning Outcomes
+
+  - Understanding of why Bayesian Workflows are needed (i.e., current problems)
+  - Basic understanding of how Bayesian Workflows aim to solve problems
+  - Basic understanding of steps in workflow
+
 ##### Required Reading
 ##### Recommended Reading
 
 ### Session 2: Choosing an Initial Model
 
 ##### Learning Outcomes
+
+  - How to specify a research question that can be answered with a statistical model
+  - Awareness of tools and methods to aid in exploring data and formulating question
+  - Awareness of common/standard modelling approaches for different questions
+
 ##### Required Reading
 ##### Recommended Reading
 
 ### Session 3: Prior Choices
 
 ##### Learning Outcomes
+
+  - Develop awareness of impact of mis-specified priors
+  - Understanding of approaches for specifying prior (i.e., prior elicitation)
+  - Understanding of tools/methods for diagnosing prior sensitivity
+
 ##### Required Reading
 ##### Recommended Reading
 
 ### Session 4: Posterior Predictive Checks & Calibration
 
 ##### Learning Outcomes
+
+  - Understanding role of predictive checks in model-checking
+  - Understanding of impact of different data types on approach (e.g., continuous vs discrete)
+  - Familiarity with different graphical methods and tools for supporting checking
+
 ##### Required Reading
 ##### Recommended Reading
 
 ### Session 5: Extending Models and Model Selection
 
 ##### Learning Outcomes
+
+  - Understanding of how to extend a model to better address a research question, and if it is even needed
+  - Understanding of how to select between different models, and whether this is necessary
+  - Understanding of how to combine multiple models for increased performance
+
 ##### Required Reading
 ##### Recommended Reading
 
 ### Session 6: Applying and Debugging Models in Stan
 
 ##### Learning Outcomes
+
+  - Understanding impact of different parameterisations on sampling
+  - Understanding of different types of failures/errors and how to investigate them
+
 ##### Required Reading
 ##### Recommended Reading
 
 ### Session 7: Summary & Presentations
 
 ##### Learning Outcomes
+
+  - Awareness of how workflow will differ between research questions
+
 ##### Required Reading
 ##### Recommended Reading
