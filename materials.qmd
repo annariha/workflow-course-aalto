@@ -1,6 +1,8 @@
 ---
-title: "Course Schedule 2024"
+title: "Course Schedule and Content 2024"
 ---
+
+# Schedule Overview
 
 The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:15-16:00 in R030/A133 T5.
 
@@ -14,80 +16,136 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 | Session 6 | 1 | 2 | 27 May 2024 |
 | Session 7 | 1 | 2 | 3 June 2024 |
 
----
-title: "Course Content 2024"
----
+# Schedule Detail
 
 ### Session 1: Introduction to Bayesian Workflows
 
-##### Learning Outcomes
+##### Learning Outcomes for the Session
 
-  - Understanding of why Bayesian Workflows are needed (i.e., current problems)
+  - Understanding of why data analysis / statistical / Bayesian Workflows are needed (i.e., current problems)
   - Basic understanding of how Bayesian Workflows aim to solve problems
   - Basic understanding of steps in workflow
 
-##### Required Reading
-##### Recommended Reading
+##### What the Session will Cover
+
+  - Practicalities of course
+    - Details of the grading/assessment
+    - Timing/schedules
+    - Where to find more information and support
+  - Relationship to prior BDA project tasks
+    - Concepts/tasks from BDA which will be relevant
+  - Possible datasets and modelling problems
+    - For students without their own
+  - Exploratory data analysis in Bayesian Workflow
+
+##### Recommended Reading Before Session
+
+  - Bayesian Workflow (Gelman, et al., 2020)
+    - https://arxiv.org/abs/2011.01808
 
 ### Session 2: Choosing an Initial Model
 
-##### Learning Outcomes
+##### Learning Outcomes for the Session
 
   - How to specify a research question that can be answered with a statistical model
   - Awareness of tools and methods to aid in exploring data and formulating question
   - Awareness of common/standard modelling approaches for different questions
+  - Students should have decided on their research question and at least 1 initial model
 
-##### Required Reading
-##### Recommended Reading
+##### What the Session will Cover
+
+  - Using exploratory data analysis to support the choice of initial models
+  - Common models and modelling approaches for common research questions
+    - e.g., observational, randomised study, purely exploratory, based on theory
+  - Literature and best-practices can also help with model development
+    - Using either an example or a student's dataset/problem as an example
+
+##### Recommended Reading Before Session
+
+  - Iterative Model Building (Aki Vehtari)
+    - https://www.youtube.com/watch?v=ppKpwtGy8KQ
 
 ### Session 3: Prior Choices
 
-##### Learning Outcomes
+##### Learning Outcomes for the Session
 
   - Develop awareness of impact of mis-specified priors
   - Understanding of approaches for specifying prior (i.e., prior elicitation)
   - Understanding of tools/methods for diagnosing prior sensitivity
 
-##### Required Reading
-##### Recommended Reading
+##### What the Session will Cover
 
-### Session 4: Posterior Predictive Checks & Calibration
+  - How to turn assumptions/knowledge into prior
+    - Generative priors, penalised complexity, etc.
+    - Connection to model expansion/choice/selection goals
+    - Brief coverage of different topics for prior choice
+  - How to assess prior choice
+    - If the type of prior / prior properties do not align, etc.
+    - Prior predictive checks
+  - How to revise/modify a prior (if needed)
 
-##### Learning Outcomes
+##### Recommended Reading Before Session
+
+### Session 4: Model Checking: Posterior Predictive Checks & Calibration
+
+##### Learning Outcomes for the Session
 
   - Understanding role of predictive checks in model-checking
   - Understanding of impact of different data types on approach (e.g., continuous vs discrete)
   - Familiarity with different graphical methods and tools for supporting checking
 
-##### Required Reading
-##### Recommended Reading
+##### What the Session will Cover
+
+  - Detecting, resolving, and reporting:
+    - Prior sensitivity
+    - Posterior predictive checks
+    - Calibration
+
+##### Recommended Reading Before Session
 
 ### Session 5: Extending Models and Model Selection
 
-##### Learning Outcomes
+##### Learning Outcomes for the Session
 
   - Understanding of how to extend a model to better address a research question, and if it is even needed
   - Understanding of how to select between different models, and whether this is necessary
   - Understanding of how to combine multiple models for increased performance
 
-##### Required Reading
-##### Recommended Reading
+##### What the Session will Cover
 
-### Session 6: Applying and Debugging Models in Stan
+  - Common methods for model expansion
+    - Data-driven vs theory-driven
+  - Common methods for model comparison, and interpreting the results of these
+  - Alternatives to model selection
+    - e.g., model averaging
 
-##### Learning Outcomes
+##### Recommended Reading Before Session
 
-  - Understanding impact of different parameterisations on sampling
-  - Understanding of different types of failures/errors and how to investigate them
+### Session 6: Interpreting and Presenting Model Results
 
-##### Required Reading
-##### Recommended Reading
+##### Learning Outcomes for the Session
+
+  - Using model quantities and results to assess whether research question has been answered
+    - Reflecting on how/if initial question has changed throughout workflow process
+    - Reflection on possible alternative expansions for research questions/models
+  - Presenting model results accessibly
+
+##### What the Session will Cover
+
+  - How to extract and prepare results
+    - e.g., using R packages such as `tidybayes` and `marginaleffects`
+    - Further analysis of interesting effects (interactions, smooths, etc.)
+  - Prior sensitivity for final conclusions (quantities/choices not sensitive to priors)
+  - Brief introduction to alternative methods for constructing and reporting alternative models
+    - e.g., Multiverse analysis
+
+##### Recommended Reading Before Session
 
 ### Session 7: Summary & Presentations
 
-##### Learning Outcomes
+##### Learning Outcomes for the Session
 
   - Awareness of how workflow will differ between research questions
+  - Reflection of how workflow contributed to analysis process
+  - Reflection on future iterations of model
 
-##### Required Reading
-##### Recommended Reading
