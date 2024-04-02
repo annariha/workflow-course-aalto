@@ -14,16 +14,10 @@ Successful completion of [CS-E5710 Bayesian Data Analysis](https://avehtari.gith
 
 The number of participants is limited to 30.
 
-### After this course, students will be able to 
-
-- 
-- 
-- 
-
 ### Assessment
 
-You will be assessed on your understanding of each of the workflow steps, the role they play in the Bayesian workflow, and to apply them to real-world data.
+You will be assessed on your understanding of each of the workflow steps, the role they play in the Bayesian workflow, and how to apply them to real-world data.
 
 - 5 ECTS
 - Pass/Fail
-- workflow diary 
+- workflow diary
