@@ -1,0 +1,73 @@
+---
+title: "Workflow diary"
+date: 2023-04-22
+author: Your Name
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    code-tools: true
+citation: true
+---
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+```
+
+### Session 1: Introduction to Bayesian Workflows
+
+I chose the dataset ... from ... and I want to answer the following questions: 
+
+1. ...
+2. ...
+
+The outcome that I am interested in is ... . 
+
+```{r}
+data <- ChickWeight
+head(data)
+```
+
+### Session 2: Choosing an Initial Model
+
+The first model that I tried 
+
+```{r}
+```
+
+### Session 3: Prior Choices
+
+At first, I chose the priors ... because ... . 
+Then, I tried ... . 
+
+```{r}
+```
+
+### Session 4: Model Checking with Posterior Predictive Checks & Calibration
+
+I visualised the posterior results for the model parameters and observed ... .
+I compared the observed data with replicates from the posterior and observed ... . 
+
+```{r}
+```
+
+### Session 5: Extending Models and Model Selection
+
+I explored different extension of my initial model(s) by adding ... and changing ... . 
+I compared the predictive performance of the different models and concluded that ... . 
+
+```{r}
+```
+
+### Session 6: Interpreting and Presenting Model Results
+
+```{r}
+```
+
+### Session 7: Summary & Presentations
+
+```{r}
+```
