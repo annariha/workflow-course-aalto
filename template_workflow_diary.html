@@ -213,10 +213,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>There are a number of packages that you will need throughout this course. If you have any issues completing the setup steps below, please let us know.</p>
 <p>A small helper function that we will use to check whether a package is installed and install it if necessary is provided below:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>install_if_missing <span class="ot">&lt;-</span> <span class="cf">function</span>(pkgs, <span class="at">repos =</span> <span class="st">""</span>) {</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>install_if_missing <span class="ot">&lt;-</span> <span class="cf">function</span>(pkgs) {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  pkgs_missing <span class="ot">&lt;-</span> pkgs[<span class="fu">sapply</span>(pkgs, \(pkg) <span class="sc">!</span><span class="fu">requireNamespace</span>(pkg, <span class="at">quietly =</span> <span class="cn">TRUE</span>))]</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(pkgs_missing) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkgs_missing, <span class="at">repos =</span> <span class="fu">c</span>(repos, <span class="st">"https://cloud.r-project.org/"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkgs_missing)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -224,256 +224,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="stan-cmdstanr-cmdstanr-and-brms">Stan: <code>cmdstanr</code>, <code>cmdstanr</code>, and <code>brms</code></h4>
 <p>For estimating Bayesian models in R, we recommend the <code>cmdstanr</code> package. You should be familiar with this if you have previously completed BDA. You can install <code>cmdstanr</code>, if it is not already installed, by running the following:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_missing</span>(<span class="st">"cmdstanr"</span>, <span class="at">repos =</span> <span class="st">"https://mc-stan.org/r-packages/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Installing package into '/home/runner/work/_temp/Library'
-(as 'lib' is unspecified)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>also installing the dependencies 'fansi', 'magrittr', 'pkgconfig', 'utf8', 'generics', 'numDeriv', 'backports', 'abind', 'tibble', 'vctrs', 'tensorA', 'pillar', 'distributional', 'matrixStats', 'ps', 'checkmate', 'data.table', 'posterior', 'processx', 'withr'</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'cmdstanr' package is not available on CRAN, so you will need to install it from GitHub:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"cmdstanr"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install_if_missing</span>(<span class="st">"remotes"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"stan-dev/cmdstanr"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>cmdstanr</code> package is simply a wrapper/interface for the CmdStan command-line interface to Stan, which also needs to be installed. You can run the following code to check whether CmdStan is installed and up-to-date, and install it if necessary:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>curr_ver <span class="ot">&lt;-</span> cmdstanr<span class="sc">::</span><span class="fu">cmdstan_version</span>(<span class="at">error_on_NA =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">is.null</span>(curr_ver) <span class="sc">||</span> curr_ver <span class="sc">&lt;</span> cmdstanr<span class="sc">:::</span><span class="fu">latest_released_version</span>()) {</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  cmdstanr<span class="sc">::</span><span class="fu">check_cmdstan_toolchain</span>(<span class="at">fix =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>()</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The C++ toolchain required for CmdStan is setup properly!
-The C++ toolchain required for CmdStan is setup properly!</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>* Latest CmdStan release is v2.34.1</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>* Installing CmdStan v2.34.1 in /home/runner/.cmdstan/cmdstan-2.34.1</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>* Downloading cmdstan-2.34.1.tar.gz from GitHub...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>* Download complete</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>* Unpacking archive...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>* Building CmdStan binaries...</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>cp bin/linux-stanc bin/stanc
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/nvector/serial/nvector_serial.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/nvector/serial/nvector_serial.o
-chmod +x bin/stanc
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_math.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_math.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodea.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodea.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodea_io.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodea_io.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_bandpre.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_bandpre.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_bbdpre.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_bbdpre.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_diag.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_diag.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_direct.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_direct.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_io.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_io.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_ls.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_ls.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls_sim.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls_sim.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls_stg.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls_stg.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls_stg1.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls_stg1.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_spils.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_spils.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_band.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_band.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_context.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_context.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_dense.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_dense.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_direct.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_direct.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_futils.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_futils.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_iterative.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_iterative.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_linearsolver.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_linearsolver.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_matrix.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_matrix.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_memory.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_memory.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nonlinearsolver.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nonlinearsolver.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector_senswrapper.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector_senswrapper.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_version.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_version.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/band/sunmatrix_band.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/band/sunmatrix_band.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/dense/sunmatrix_dense.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/dense/sunmatrix_dense.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/band/sunlinsol_band.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/band/sunlinsol_band.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/dense/sunlinsol_dense.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/dense/sunlinsol_dense.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/newton/sunnonlinsol_newton.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/newton/sunnonlinsol_newton.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/fixedpoint/sunnonlinsol_fixedpoint.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/fixedpoint/sunnonlinsol_fixedpoint.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idaa.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idaa.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idaa_io.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idaa_io.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_bbdpre.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_bbdpre.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_direct.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_direct.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_ic.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_ic.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_io.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_io.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_ls.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_ls.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_nls.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_nls.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_nls_sim.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_nls_sim.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_nls_stg.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_nls_stg.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_spils.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_spils.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_bbdpre.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_bbdpre.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_direct.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_direct.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_io.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_io.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_ls.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_ls.o
-g++ -pipe   -pthread -D_REENTRANT  -O3 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials -DNO_FPRINTF_OUTPUT     -O3  -c -x c -include stan/lib/stan_math/lib/sundials_6.1.1/include/stan_sundials_printf_override.hpp stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_spils.c -o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_spils.o
-touch stan/lib/stan_math/lib/tbb/tbb-make-check
-
---- Compiling the main object file. This might take up to a minute. ---
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS          -c -o src/cmdstan/main.o src/cmdstan/main.cpp
-
---- Compiling pre-compiled header. This might take a few seconds. ---
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS          -c stan/src/stan/model/model_header.hpp -o stan/src/stan/model/model_header_11_4.hpp.gch
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS          -c -fvisibility=hidden src/cmdstan/stansummary.cpp -o bin/cmdstan/stansummary.o
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS          -c -fvisibility=hidden src/cmdstan/print.cpp -o bin/cmdstan/print.o
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS          -c -fvisibility=hidden src/cmdstan/diagnose.cpp -o bin/cmdstan/diagnose.o
-ar -rs stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_nvecserial.a stan/lib/stan_math/lib/sundials_6.1.1/src/nvector/serial/nvector_serial.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_math.o
-ar: creating stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_nvecserial.a
-ar -rs stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_cvodes.a stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodea.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodea_io.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_bandpre.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_bbdpre.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_diag.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_direct.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_io.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_ls.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls_sim.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls_stg.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_nls_stg1.o stan/lib/stan_math/lib/sundials_6.1.1/src/cvodes/cvodes_spils.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_band.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_context.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_dense.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_direct.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_futils.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_iterative.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_linearsolver.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_math.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_matrix.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_memory.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nonlinearsolver.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector_senswrapper.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_version.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/band/sunmatrix_band.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/dense/sunmatrix_dense.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/band/sunlinsol_band.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/dense/sunlinsol_dense.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/newton/sunnonlinsol_newton.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/fixedpoint/sunnonlinsol_fixedpoint.o
-ar: creating stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_cvodes.a
-ar -rs stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_idas.a stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idaa.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idaa_io.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_bbdpre.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_direct.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_ic.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_io.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_ls.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_nls.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_nls_sim.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_nls_stg.o stan/lib/stan_math/lib/sundials_6.1.1/src/idas/idas_spils.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_band.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_context.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_dense.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_direct.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_futils.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_iterative.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_linearsolver.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_math.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_matrix.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_memory.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nonlinearsolver.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector_senswrapper.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_version.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/band/sunmatrix_band.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/dense/sunmatrix_dense.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/band/sunlinsol_band.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/dense/sunlinsol_dense.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/newton/sunnonlinsol_newton.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/fixedpoint/sunnonlinsol_fixedpoint.o
-ar: creating stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_idas.a
-ar -rs stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_kinsol.a stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol.o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_bbdpre.o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_direct.o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_io.o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_ls.o stan/lib/stan_math/lib/sundials_6.1.1/src/kinsol/kinsol_spils.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_band.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_context.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_dense.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_direct.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_futils.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_iterative.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_linearsolver.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_math.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_matrix.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_memory.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nonlinearsolver.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_nvector_senswrapper.o stan/lib/stan_math/lib/sundials_6.1.1/src/sundials/sundials_version.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/band/sunmatrix_band.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunmatrix/dense/sunmatrix_dense.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/band/sunlinsol_band.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunlinsol/dense/sunlinsol_dense.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/newton/sunnonlinsol_newton.o stan/lib/stan_math/lib/sundials_6.1.1/src/sunnonlinsol/fixedpoint/sunnonlinsol_fixedpoint.o
-ar: creating stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_kinsol.a
-touch stan/lib/stan_math/lib/tbb/version_tbb_2020.3
-tbb_root="../tbb_2020.3" CXX="g++" CC="gcc" LDFLAGS='-Wl,-L,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb" -Wl,-rpath,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb"  ' 'make' -C "stan/lib/stan_math/lib/tbb" -r -f "/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb_2020.3/build/Makefile.tbb" compiler=gcc cfg=release stdver=c++1y  CXXFLAGS="-Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation  "
-make[1]: Entering directory '/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb'
-/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb_2020.3/build/Makefile.tbb:28: CONFIG: cfg=release arch=intel64 compiler=gcc target=linux runtime=cc11.4.0_libc2.35_kernel6.5.0
-g++ -o concurrent_hash_map.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/concurrent_hash_map.cpp
-g++ -o concurrent_queue.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/concurrent_queue.cpp
-g++ -o concurrent_vector.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/concurrent_vector.cpp
-g++ -o dynamic_link.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/dynamic_link.cpp
-g++ -o itt_notify.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/itt_notify.cpp
-g++ -o cache_aligned_allocator.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/cache_aligned_allocator.cpp
-g++ -o pipeline.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/pipeline.cpp
-g++ -o queuing_mutex.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/queuing_mutex.cpp
-g++ -o queuing_rw_mutex.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/queuing_rw_mutex.cpp
-g++ -o reader_writer_lock.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/reader_writer_lock.cpp
-g++ -o spin_rw_mutex.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/spin_rw_mutex.cpp
-g++ -o x86_rtm_rw_mutex.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/x86_rtm_rw_mutex.cpp
-g++ -o spin_mutex.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/spin_mutex.cpp
-g++ -o critical_section.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/critical_section.cpp
-g++ -o mutex.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/mutex.cpp
-g++ -o recursive_mutex.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/recursive_mutex.cpp
-g++ -o condition_variable.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/condition_variable.cpp
-g++ -o tbb_thread.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/tbb_thread.cpp
-g++ -o concurrent_monitor.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/concurrent_monitor.cpp
-g++ -o semaphore.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/semaphore.cpp
-g++ -o private_server.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/private_server.cpp
-g++ -o rml_tbb.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/rml/client/rml_tbb.cpp
-sh ../tbb_2020.3/build/version_info_linux.sh g++ -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include -I. &gt;version_string.ver
-g++ -o tbb_misc_ex.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/tbb_misc_ex.cpp
-g++ -o task.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/task.cpp
-g++ -o task_group_context.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/task_group_context.cpp
-g++ -o governor.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/governor.cpp
-g++ -o market.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/market.cpp
-g++ -o arena.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/arena.cpp
-g++ -o scheduler.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/scheduler.cpp
-g++ -o observer_proxy.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/observer_proxy.cpp
-g++ -o tbb_statistics.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/tbb_statistics.cpp
-g++ -o tbb_main.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/tbb/tbb_main.cpp
-g++ -o concurrent_vector_v2.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/old/concurrent_vector_v2.cpp
-g++ -o concurrent_queue_v2.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/old/concurrent_queue_v2.cpp
-g++ -o spin_rw_mutex_v2.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/old/spin_rw_mutex_v2.cpp
-g++ -o task_v2.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include ../tbb_2020.3/src/old/task_v2.cpp
-sh ../tbb_2020.3/build/generate_tbbvars.sh
-echo "INPUT (libtbb.so.2)" &gt; libtbb.so
-g++ -E -x c++ ../tbb_2020.3/src/tbb/lin64-tbb-export.def -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include &gt; tbb.def
-g++ -o tbb_misc.o -c -MMD -O2 -g -DDO_ITT_NOTIFY -DUSE_PTHREAD -pthread -m64 -mrtm  -fPIC -flifetime-dse=1 -D__TBB_BUILD=1 -Wall -Wextra -Wno-parentheses -Wno-sized-deallocation -Wno-unknown-warning-option -Wno-deprecated-copy -Wno-missing-attributes -Wno-class-memaccess -Wno-sized-deallocation   -DTBB_SUPPRESS_DEPRECATED_MESSAGES=1 -std=c++1y  -I../tbb_2020.3/src -I../tbb_2020.3/src/rml/include -I../tbb_2020.3/include -I. ../tbb_2020.3/src/tbb/tbb_misc.cpp
-g++ -fPIC -o libtbb.so.2 concurrent_hash_map.o concurrent_queue.o concurrent_vector.o dynamic_link.o itt_notify.o cache_aligned_allocator.o pipeline.o queuing_mutex.o queuing_rw_mutex.o reader_writer_lock.o spin_rw_mutex.o x86_rtm_rw_mutex.o spin_mutex.o critical_section.o mutex.o recursive_mutex.o condition_variable.o tbb_thread.o concurrent_monitor.o semaphore.o private_server.o rml_tbb.o tbb_misc.o tbb_misc_ex.o task.o task_group_context.o governor.o market.o arena.o scheduler.o observer_proxy.o tbb_statistics.o tbb_main.o concurrent_vector_v2.o concurrent_queue_v2.o spin_rw_mutex_v2.o task_v2.o   -ldl -lrt -shared -Wl,-soname=libtbb.so.2 -pthread -m64 -Wl,-L,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb" -Wl,-rpath,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb"   -Wl,--version-script,tbb.def
-make[1]: Leaving directory '/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb'
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS               -Wl,-L,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb" -Wl,-rpath,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb"        bin/cmdstan/stansummary.o stan/lib/stan_math/lib/tbb/libtbb.so.2       -ltbb   -o bin/stansummary
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS               -Wl,-L,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb" -Wl,-rpath,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb"        bin/cmdstan/print.o stan/lib/stan_math/lib/tbb/libtbb.so.2       -ltbb   -o bin/print
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS               -Wl,-L,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb" -Wl,-rpath,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb"        bin/cmdstan/diagnose.o stan/lib/stan_math/lib/tbb/libtbb.so.2       -ltbb   -o bin/diagnose
-
---- CmdStan v2.34.1 built ---
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS          -c -MT stan/src/stan/model/model_header_11_4.hpp.gch -MT stan/src/stan/model/model_header_11_4.d -MM -E -MG -MP -MF stan/src/stan/model/model_header_11_4.d stan/src/stan/model/model_header.hpp
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS          -c -MT src/cmdstan/main.o -MM -E -MG -MP -MF src/cmdstan/main.d src/cmdstan/main.cpp
-
---- Translating Stan model to C++ code ---
-bin/stanc  --o=examples/bernoulli/bernoulli.hpp examples/bernoulli/bernoulli.stan
-
---- Compiling C++ code ---
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS          -c -Wno-ignored-attributes   -x c++ -o examples/bernoulli/bernoulli.o examples/bernoulli/bernoulli.hpp
-
---- Linking model ---
-g++ -Wno-deprecated-declarations -std=c++1y -pthread -D_REENTRANT -Wno-sign-compare -Wno-ignored-attributes      -I stan/lib/stan_math/lib/tbb_2020.3/include    -O3 -I src -I stan/src -I stan/lib/rapidjson_1.1.0/ -I lib/CLI11-1.9.1/ -I stan/lib/stan_math/ -I stan/lib/stan_math/lib/eigen_3.4.0 -I stan/lib/stan_math/lib/boost_1.81.0 -I stan/lib/stan_math/lib/sundials_6.1.1/include -I stan/lib/stan_math/lib/sundials_6.1.1/src/sundials    -DBOOST_DISABLE_ASSERTS               -Wl,-L,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb" -Wl,-rpath,"/home/runner/.cmdstan/cmdstan-2.34.1/stan/lib/stan_math/lib/tbb"        examples/bernoulli/bernoulli.o src/cmdstan/main.o       -ltbb   stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_nvecserial.a stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_cvodes.a stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_idas.a stan/lib/stan_math/lib/sundials_6.1.1/lib/libsundials_kinsol.a  stan/lib/stan_math/lib/tbb/libtbb.so.2 -o examples/bernoulli/bernoulli
-rm examples/bernoulli/bernoulli.o examples/bernoulli/bernoulli.hpp</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>* Finished installing CmdStan to /home/runner/.cmdstan/cmdstan-2.34.1</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>CmdStan path set to: /home/runner/.cmdstan/cmdstan-2.34.1</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(curr_ver)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>curr_ver <span class="ot">&lt;-</span> cmdstanr<span class="sc">::</span><span class="fu">cmdstan_version</span>(<span class="at">error_on_NA =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">is.null</span>(curr_ver) <span class="sc">||</span> curr_ver <span class="sc">&lt;</span> cmdstanr<span class="sc">:::</span><span class="fu">latest_released_version</span>()) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  cmdstanr<span class="sc">::</span><span class="fu">check_cmdstan_toolchain</span>(<span class="at">fix =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(curr_ver)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A more user-friendly interface to <code>cmdstanr</code> is the <code>brms</code> package, which provides a formula-based interface to specify Bayesian models. You can install <code>brms</code> by running the following:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_missing</span>(<span class="st">"brms"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Installing package into '/home/runner/work/_temp/Library'
-(as 'lib' is unspecified)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: unable to access index for repository /src/contrib:
-  cannot open URL '/src/contrib/PACKAGES'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>also installing the dependencies 'colorspace', 'callr', 'farver', 'labeling', 'munsell', 'RColorBrewer', 'viridisLite', 'plyr', 'stringi', 'StanHeaders', 'inline', 'gridExtra', 'RcppParallel', 'pkgbuild', 'QuickJSR', 'RcppEigen', 'BH', 'gtable', 'isoband', 'scales', 'desc', 'dplyr', 'ggridges', 'reshape2', 'tidyselect', 'mvtnorm', 'Brobdingnag', 'stringr', 'globals', 'listenv', 'parallelly', 'Rcpp', 'rstan', 'ggplot2', 'loo', 'rstantools', 'bayesplot', 'bridgesampling', 'future', 'future.apply', 'nleqslv', 'coda'</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"brms"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"brms"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="post-processing-and-diagnostics" class="level4">
 <h4 class="anchored" data-anchor-id="post-processing-and-diagnostics">Post-Processing and Diagnostics</h4>
-<p>There are also some packages that you are likely to find useful for post-processing and diagnosing your models. These include <code>bayesplot</code>, <code>posterior</code>, <code>loo</code>, and <code>priorsense</code>. You can install these by running the following:</p>
+<p>There are also some packages that you are likely to find useful for post-processing and diagnosing your models. These include <code>bayesplot</code>, <code>posterior</code>, <code>loo</code>, and <code>priorsense</code>. The first three would have been installed with <code>brms</code> above, and you can install <code>priorsense</code> by running the following:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_missing</span>(<span class="fu">c</span>(<span class="st">"bayesplot"</span>, <span class="st">"loo"</span>, <span class="st">"posterior"</span>))</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'priorsense' package is not available on CRAN, so you will need to install it from GitHub:</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"priorsense"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install_if_missing</span>(<span class="st">"remotes"</span>)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"n-kall/priorsense"</span>)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Installing package into '/home/runner/work/_temp/Library'
-(as 'lib' is unspecified)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: unable to access index for repository /src/contrib:
-  cannot open URL '/src/contrib/PACKAGES'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Using github PAT from envvar GITHUB_TOKEN. Use `gitcreds::gitcreds_set()` and unset GITHUB_TOKEN in .Renviron (or elsewhere) if you want to use the more secure git credential store instead.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Downloading GitHub repo n-kall/priorsense@HEAD</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>cetcolor (NA -&gt; 0.2.0) [CRAN]</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Installing 1 packages: cetcolor</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Installing package into '/home/runner/work/_temp/Library'
-(as 'lib' is unspecified)</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>── R CMD build ─────────────────────────────────────────────────────────────────
-* checking for file ‘/tmp/RtmpnrTY9b/remotes2f5c5fb6bcf9/n-kall-priorsense-4486952/DESCRIPTION’ ... OK
-* preparing ‘priorsense’:
-* checking DESCRIPTION meta-information ... OK
-* checking for LF line-endings in source and make files and shell scripts
-* checking for empty or unneeded directories
-Omitted ‘LazyData’ from DESCRIPTION
-* building ‘priorsense_0.0.0.9000.tar.gz’</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Installing package into '/home/runner/work/_temp/Library'
-(as 'lib' is unspecified)</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'priorsense' package is not available on CRAN, so you will need to install it from GitHub:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"priorsense"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"n-kall/priorsense"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -1038,188 +818,191 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb31" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Workflow Diary Example"</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2023-04-22</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> Your Name</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting Started</span></span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="fu">### How to use this template</span></span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>This workflow diary template will be used for you to record your experiences, attempts, and results while you apply the Bayesian workflow steps during each week of the seminar. Each section of the template corresponds to a step in the workflow that you will applying, specifies a suggested minimum 'goal' that you should aim to complete. How you decide to implement the workflow steps and achieve these goals is completely up to you.</span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>There are no 'wrong' answers here, and you are not being graded on whether you implement the workflow steps 'correctly'. This diary should be record of your learning and experience with each workflow step, and will evolve as you learn more about the Bayesian workflow. If there are any issues or questions that you have, please record them in the diary so that we can discuss them during the in-person seminar sessions.</span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>Remember that you should be able to re-run, modify, or extend any of your code if requested during the interactive presentations.</span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a><span class="fu">### Setting up your Environment</span></span>
-<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>There are a number of packages that you will need throughout this course. If you have any issues completing the setup steps below, please let us know.</span>
-<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>A small helper function that we will use to check whether a package is installed and install it if necessary is provided below:</span>
-<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>install_if_missing <span class="ot">&lt;-</span> <span class="cf">function</span>(pkgs, <span class="at">repos =</span> <span class="st">""</span>) {</span>
-<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>  pkgs_missing <span class="ot">&lt;-</span> pkgs[<span class="fu">sapply</span>(pkgs, \(pkg) <span class="sc">!</span><span class="fu">requireNamespace</span>(pkg, <span class="at">quietly =</span> <span class="cn">TRUE</span>))]</span>
-<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(pkgs_missing) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkgs_missing, <span class="at">repos =</span> <span class="fu">c</span>(repos, <span class="st">"https://cloud.r-project.org/"</span>))</span>
-<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Stan: `cmdstanr`, `cmdstanr`, and `brms`</span></span>
-<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>For estimating Bayesian models in R, we recommend the <span class="in">`cmdstanr`</span> package. You should be familiar with this if you have previously completed BDA. You can install <span class="in">`cmdstanr`</span>, if it is not already installed, by running the following:</span>
-<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_missing</span>(<span class="st">"cmdstanr"</span>, <span class="at">repos =</span> <span class="st">"https://mc-stan.org/r-packages/"</span>)</span>
-<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-57"><a href="#cb31-57" aria-hidden="true" tabindex="-1"></a>The <span class="in">`cmdstanr`</span> package is simply a wrapper/interface for the CmdStan command-line interface to Stan, which also needs to be installed. You can run the following code to check whether CmdStan is installed and up-to-date, and install it if necessary:</span>
-<span id="cb31-58"><a href="#cb31-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-61"><a href="#cb31-61" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-62"><a href="#cb31-62" aria-hidden="true" tabindex="-1"></a>curr_ver <span class="ot">&lt;-</span> cmdstanr<span class="sc">::</span><span class="fu">cmdstan_version</span>(<span class="at">error_on_NA =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb31-63"><a href="#cb31-63" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">is.null</span>(curr_ver) <span class="sc">||</span> curr_ver <span class="sc">&lt;</span> cmdstanr<span class="sc">:::</span><span class="fu">latest_released_version</span>()) {</span>
-<span id="cb31-64"><a href="#cb31-64" aria-hidden="true" tabindex="-1"></a>  cmdstanr<span class="sc">::</span><span class="fu">check_cmdstan_toolchain</span>(<span class="at">fix =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-65"><a href="#cb31-65" aria-hidden="true" tabindex="-1"></a>  cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>()</span>
-<span id="cb31-66"><a href="#cb31-66" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb31-67"><a href="#cb31-67" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(curr_ver)</span>
-<span id="cb31-68"><a href="#cb31-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-69"><a href="#cb31-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-70"><a href="#cb31-70" aria-hidden="true" tabindex="-1"></a>A more user-friendly interface to <span class="in">`cmdstanr`</span> is the <span class="in">`brms`</span> package, which provides a formula-based interface to specify Bayesian models. You can install <span class="in">`brms`</span> by running the following:</span>
-<span id="cb31-71"><a href="#cb31-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-74"><a href="#cb31-74" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-75"><a href="#cb31-75" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_missing</span>(<span class="st">"brms"</span>)</span>
-<span id="cb31-76"><a href="#cb31-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-77"><a href="#cb31-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-78"><a href="#cb31-78" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Post-Processing and Diagnostics</span></span>
-<span id="cb31-79"><a href="#cb31-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-80"><a href="#cb31-80" aria-hidden="true" tabindex="-1"></a>There are also some packages that you are likely to find useful for post-processing and diagnosing your models. These include <span class="in">`bayesplot`</span>, <span class="in">`posterior`</span>, <span class="in">`loo`</span>, and <span class="in">`priorsense`</span>. You can install these by running the following:</span>
-<span id="cb31-81"><a href="#cb31-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-84"><a href="#cb31-84" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-85"><a href="#cb31-85" aria-hidden="true" tabindex="-1"></a><span class="fu">install_if_missing</span>(<span class="fu">c</span>(<span class="st">"bayesplot"</span>, <span class="st">"loo"</span>, <span class="st">"posterior"</span>))</span>
-<span id="cb31-86"><a href="#cb31-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-87"><a href="#cb31-87" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'priorsense' package is not available on CRAN, so you will need to install it from GitHub:</span></span>
-<span id="cb31-88"><a href="#cb31-88" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"priorsense"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb31-89"><a href="#cb31-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install_if_missing</span>(<span class="st">"remotes"</span>)</span>
-<span id="cb31-90"><a href="#cb31-90" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"n-kall/priorsense"</span>)</span>
-<span id="cb31-91"><a href="#cb31-91" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb31-92"><a href="#cb31-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-93"><a href="#cb31-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-94"><a href="#cb31-94" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bayesian Workflow</span></span>
-<span id="cb31-95"><a href="#cb31-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-96"><a href="#cb31-96" aria-hidden="true" tabindex="-1"></a><span class="fu">### Loading Data and Preprocessing</span></span>
-<span id="cb31-97"><a href="#cb31-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-98"><a href="#cb31-98" aria-hidden="true" tabindex="-1"></a>Use this section of the diary for loading your dataset of choice and performing any necessary preprocessing. This could include cleaning the data, transforming variables, or creating new variables. Remember that you should be able to re-run or modify this code if needed during the interactive presentations.</span>
-<span id="cb31-99"><a href="#cb31-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-102"><a href="#cb31-102" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-103"><a href="#cb31-103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-104"><a href="#cb31-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-105"><a href="#cb31-105" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 1: Exploratory Data Analysis and Choosing a Research Question</span></span>
-<span id="cb31-106"><a href="#cb31-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-107"><a href="#cb31-107" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
-<span id="cb31-108"><a href="#cb31-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-109"><a href="#cb31-109" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
-<span id="cb31-110"><a href="#cb31-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-111"><a href="#cb31-111" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Decided on your research question</span>
-<span id="cb31-112"><a href="#cb31-112" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Conducted some exploratory data analysis to understand your data</span>
-<span id="cb31-113"><a href="#cb31-113" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Used the results of the analysis to propose an initial model for answering your research question</span>
-<span id="cb31-114"><a href="#cb31-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-115"><a href="#cb31-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-116"><a href="#cb31-116" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
-<span id="cb31-117"><a href="#cb31-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-120"><a href="#cb31-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-121"><a href="#cb31-121" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-122"><a href="#cb31-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-123"><a href="#cb31-123" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 2: Prior Choice</span></span>
-<span id="cb31-124"><a href="#cb31-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-125"><a href="#cb31-125" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
-<span id="cb31-126"><a href="#cb31-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-127"><a href="#cb31-127" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
-<span id="cb31-128"><a href="#cb31-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-129"><a href="#cb31-129" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Proposed priors for each parameter in your model, with justification</span>
-<span id="cb31-130"><a href="#cb31-130" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed a prior predictive check to ensure that your priors are reasonable</span>
-<span id="cb31-131"><a href="#cb31-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-132"><a href="#cb31-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-133"><a href="#cb31-133" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
-<span id="cb31-134"><a href="#cb31-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-137"><a href="#cb31-137" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-138"><a href="#cb31-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-139"><a href="#cb31-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-140"><a href="#cb31-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-141"><a href="#cb31-141" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 3: Model Fitting and Checking</span></span>
-<span id="cb31-142"><a href="#cb31-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-143"><a href="#cb31-143" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
-<span id="cb31-144"><a href="#cb31-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-145"><a href="#cb31-145" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
-<span id="cb31-146"><a href="#cb31-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-147"><a href="#cb31-147" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Fitted your model with chosen priors to your data</span>
-<span id="cb31-148"><a href="#cb31-148" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed diagnostic checks for quality/stability of fitting</span>
-<span id="cb31-149"><a href="#cb31-149" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed prior sensitivity assessment to ensure that your results are not driven by your choice of priors</span>
-<span id="cb31-150"><a href="#cb31-150" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed predictive performance assessment</span>
-<span id="cb31-151"><a href="#cb31-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-152"><a href="#cb31-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-153"><a href="#cb31-153" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
-<span id="cb31-154"><a href="#cb31-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-157"><a href="#cb31-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-158"><a href="#cb31-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-159"><a href="#cb31-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-160"><a href="#cb31-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-161"><a href="#cb31-161" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 4: Extending Models and Model Selection</span></span>
-<span id="cb31-162"><a href="#cb31-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-163"><a href="#cb31-163" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
-<span id="cb31-164"><a href="#cb31-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-165"><a href="#cb31-165" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
-<span id="cb31-166"><a href="#cb31-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-167"><a href="#cb31-167" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Decided on whether a model expansion or selection approach is relevant for your research question, with justification</span>
-<span id="cb31-168"><a href="#cb31-168" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Proposed a second model (or an expansion to the first), building on the issues/diagnostics/concepts from previous weeks</span>
-<span id="cb31-169"><a href="#cb31-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-170"><a href="#cb31-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-171"><a href="#cb31-171" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
-<span id="cb31-172"><a href="#cb31-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-175"><a href="#cb31-175" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-176"><a href="#cb31-176" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-177"><a href="#cb31-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-178"><a href="#cb31-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-179"><a href="#cb31-179" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 5: Interpreting and Presenting Model Results</span></span>
-<span id="cb31-180"><a href="#cb31-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-181"><a href="#cb31-181" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
-<span id="cb31-182"><a href="#cb31-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-183"><a href="#cb31-183" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
-<span id="cb31-184"><a href="#cb31-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-185"><a href="#cb31-185" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Prepared a concise summary of your results and how they answer your research question</span>
-<span id="cb31-186"><a href="#cb31-186" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Prepared a visualisation of your results that is suitable for presentation to a non-technical audience</span>
-<span id="cb31-187"><a href="#cb31-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-188"><a href="#cb31-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-189"><a href="#cb31-189" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
-<span id="cb31-190"><a href="#cb31-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-193"><a href="#cb31-193" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb31-194"><a href="#cb31-194" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb31-195"><a href="#cb31-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-196"><a href="#cb31-196" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 6: Reflection and Future Work</span></span>
-<span id="cb31-197"><a href="#cb31-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-198"><a href="#cb31-198" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
-<span id="cb31-199"><a href="#cb31-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-200"><a href="#cb31-200" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
-<span id="cb31-201"><a href="#cb31-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-202"><a href="#cb31-202" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Reflected on your experiences with the Bayesian workflow</span>
-<span id="cb31-203"><a href="#cb31-203" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Proposed future work or extensions to your research question</span>
-<span id="cb31-204"><a href="#cb31-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-205"><a href="#cb31-205" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Reflections and Notes</span></span>
-<span id="cb31-206"><a href="#cb31-206" aria-hidden="true" tabindex="-1"></a></span>
+<div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Workflow Diary Example"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2023-04-22</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> Your Name</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting Started</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="fu">### How to use this template</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>This workflow diary template will be used for you to record your experiences, attempts, and results while you apply the Bayesian workflow steps during each week of the seminar. Each section of the template corresponds to a step in the workflow that you will applying, specifies a suggested minimum 'goal' that you should aim to complete. How you decide to implement the workflow steps and achieve these goals is completely up to you.</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>There are no 'wrong' answers here, and you are not being graded on whether you implement the workflow steps 'correctly'. This diary should be record of your learning and experience with each workflow step, and will evolve as you learn more about the Bayesian workflow. If there are any issues or questions that you have, please record them in the diary so that we can discuss them during the in-person seminar sessions.</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>Remember that you should be able to re-run, modify, or extend any of your code if requested during the interactive presentations.</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="fu">### Setting up your Environment</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>There are a number of packages that you will need throughout this course. If you have any issues completing the setup steps below, please let us know.</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>A small helper function that we will use to check whether a package is installed and install it if necessary is provided below:</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>install_if_missing <span class="ot">&lt;-</span> <span class="cf">function</span>(pkgs) {</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>  pkgs_missing <span class="ot">&lt;-</span> pkgs[<span class="fu">sapply</span>(pkgs, \(pkg) <span class="sc">!</span><span class="fu">requireNamespace</span>(pkg, <span class="at">quietly =</span> <span class="cn">TRUE</span>))]</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(pkgs_missing) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkgs_missing)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Stan: `cmdstanr`, `cmdstanr`, and `brms`</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>For estimating Bayesian models in R, we recommend the <span class="in">`cmdstanr`</span> package. You should be familiar with this if you have previously completed BDA. You can install <span class="in">`cmdstanr`</span>, if it is not already installed, by running the following:</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'cmdstanr' package is not available on CRAN, so you will need to install it from GitHub:</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"cmdstanr"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install_if_missing</span>(<span class="st">"remotes"</span>)</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"stan-dev/cmdstanr"</span>)</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>The <span class="in">`cmdstanr`</span> package is simply a wrapper/interface for the CmdStan command-line interface to Stan, which also needs to be installed. You can run the following code to check whether CmdStan is installed and up-to-date, and install it if necessary:</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>curr_ver <span class="ot">&lt;-</span> cmdstanr<span class="sc">::</span><span class="fu">cmdstan_version</span>(<span class="at">error_on_NA =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">is.null</span>(curr_ver) <span class="sc">||</span> curr_ver <span class="sc">&lt;</span> cmdstanr<span class="sc">:::</span><span class="fu">latest_released_version</span>()) {</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>  cmdstanr<span class="sc">::</span><span class="fu">check_cmdstan_toolchain</span>(<span class="at">fix =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>  cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>()</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(curr_ver)</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>A more user-friendly interface to <span class="in">`cmdstanr`</span> is the <span class="in">`brms`</span> package, which provides a formula-based interface to specify Bayesian models. You can install <span class="in">`brms`</span> by running the following:</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"brms"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"brms"</span>)</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Post-Processing and Diagnostics</span></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>There are also some packages that you are likely to find useful for post-processing and diagnosing your models. These include <span class="in">`bayesplot`</span>, <span class="in">`posterior`</span>, <span class="in">`loo`</span>, and <span class="in">`priorsense`</span>. The first three would have been installed with <span class="in">`brms`</span> above, and you can install <span class="in">`priorsense`</span> by running the following:</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'priorsense' package is not available on CRAN, so you will need to install it from GitHub:</span></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"priorsense"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"n-kall/priorsense"</span>)</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bayesian Workflow</span></span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a><span class="fu">### Loading Data and Preprocessing</span></span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>Use this section of the diary for loading your dataset of choice and performing any necessary preprocessing. This could include cleaning the data, transforming variables, or creating new variables. Remember that you should be able to re-run or modify this code if needed during the interactive presentations.</span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 1: Exploratory Data Analysis and Choosing a Research Question</span></span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Decided on your research question</span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Conducted some exploratory data analysis to understand your data</span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Used the results of the analysis to propose an initial model for answering your research question</span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 2: Prior Choice</span></span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Proposed priors for each parameter in your model, with justification</span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed a prior predictive check to ensure that your priors are reasonable</span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 3: Model Fitting and Checking</span></span>
+<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
+<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
+<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Fitted your model with chosen priors to your data</span>
+<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed diagnostic checks for quality/stability of fitting</span>
+<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed prior sensitivity assessment to ensure that your results are not driven by your choice of priors</span>
+<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed predictive performance assessment</span>
+<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
+<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 4: Extending Models and Model Selection</span></span>
+<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
+<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
+<span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Decided on whether a model expansion or selection approach is relevant for your research question, with justification</span>
+<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Proposed a second model (or an expansion to the first), building on the issues/diagnostics/concepts from previous weeks</span>
+<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
+<span id="cb6-175"><a href="#cb6-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-178"><a href="#cb6-178" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-179"><a href="#cb6-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-180"><a href="#cb6-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-181"><a href="#cb6-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-182"><a href="#cb6-182" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 5: Interpreting and Presenting Model Results</span></span>
+<span id="cb6-183"><a href="#cb6-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-184"><a href="#cb6-184" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
+<span id="cb6-185"><a href="#cb6-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-186"><a href="#cb6-186" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
+<span id="cb6-187"><a href="#cb6-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-188"><a href="#cb6-188" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Prepared a concise summary of your results and how they answer your research question</span>
+<span id="cb6-189"><a href="#cb6-189" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Prepared a visualisation of your results that is suitable for presentation to a non-technical audience</span>
+<span id="cb6-190"><a href="#cb6-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-191"><a href="#cb6-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-192"><a href="#cb6-192" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Code and Results</span></span>
+<span id="cb6-193"><a href="#cb6-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-196"><a href="#cb6-196" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb6-197"><a href="#cb6-197" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-198"><a href="#cb6-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-199"><a href="#cb6-199" aria-hidden="true" tabindex="-1"></a><span class="fu">### Week 6: Reflection and Future Work</span></span>
+<span id="cb6-200"><a href="#cb6-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-201"><a href="#cb6-201" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Goal</span></span>
+<span id="cb6-202"><a href="#cb6-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-203"><a href="#cb6-203" aria-hidden="true" tabindex="-1"></a>After this week, you should have:</span>
+<span id="cb6-204"><a href="#cb6-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-205"><a href="#cb6-205" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Reflected on your experiences with the Bayesian workflow</span>
+<span id="cb6-206"><a href="#cb6-206" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Proposed future work or extensions to your research question</span>
+<span id="cb6-207"><a href="#cb6-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-208"><a href="#cb6-208" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Reflections and Notes</span></span>
+<span id="cb6-209"><a href="#cb6-209" aria-hidden="true" tabindex="-1"></a></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
