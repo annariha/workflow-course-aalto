@@ -32,10 +32,10 @@ There are a number of packages that you will need throughout this course. If you
 A small helper function that we will use to check whether a package is installed and install it if necessary is provided below:
 
 ```{r}
-install_if_missing <- function(pkgs, repos = "") {
+install_if_missing <- function(pkgs) {
   pkgs_missing <- pkgs[sapply(pkgs, \(pkg) !requireNamespace(pkg, quietly = TRUE))]
   if (length(pkgs_missing) > 0) {
-    install.packages(pkgs_missing, repos = c(repos, "https://cloud.r-project.org/"))
+    install.packages(pkgs_missing)
   }
 }
 ```
@@ -45,7 +45,11 @@ install_if_missing <- function(pkgs, repos = "") {
 For estimating Bayesian models in R, we recommend the `cmdstanr` package. You should be familiar with this if you have previously completed BDA. You can install `cmdstanr`, if it is not already installed, by running the following:
 
 ```{r}
-install_if_missing("cmdstanr", repos = "https://mc-stan.org/r-packages/")
+# The 'cmdstanr' package is not available on CRAN, so you will need to install it from GitHub:
+if (!requireNamespace("cmdstanr", quietly = TRUE)) {
+  install_if_missing("remotes")
+  remotes::install_github("stan-dev/cmdstanr")
+}
 ```
 
 The `cmdstanr` package is simply a wrapper/interface for the CmdStan command-line interface to Stan, which also needs to be installed. You can run the following code to check whether CmdStan is installed and up-to-date, and install it if necessary:
@@ -74,7 +78,6 @@ install_if_missing(c("bayesplot", "loo", "posterior"))
 
 # The 'priorsense' package is not available on CRAN, so you will need to install it from GitHub:
 if (!requireNamespace("priorsense", quietly = TRUE)) {
-  install_if_missing("remotes")
   remotes::install_github("n-kall/priorsense")
 }
 ```
