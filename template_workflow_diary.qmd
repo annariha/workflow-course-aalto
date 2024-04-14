@@ -66,16 +66,16 @@ rm(curr_ver)
 A more user-friendly interface to `cmdstanr` is the `brms` package, which provides a formula-based interface to specify Bayesian models. You can install `brms` by running the following:
 
 ```{r}
-install_if_missing("brms")
+if (!requireNamespace("brms", quietly = TRUE)) {
+  install.packages("brms")
+}
 ```
 
 #### Post-Processing and Diagnostics
 
-There are also some packages that you are likely to find useful for post-processing and diagnosing your models. These include `bayesplot`, `posterior`, `loo`, and `priorsense`. You can install these by running the following:
+There are also some packages that you are likely to find useful for post-processing and diagnosing your models. These include `bayesplot`, `posterior`, `loo`, and `priorsense`. The first three would have been installed with `brms` above, and you can install `priorsense` by running the following:
 
 ```{r}
-install_if_missing(c("bayesplot", "loo", "posterior"))
-
 # The 'priorsense' package is not available on CRAN, so you will need to install it from GitHub:
 if (!requireNamespace("priorsense", quietly = TRUE)) {
   remotes::install_github("n-kall/priorsense")
