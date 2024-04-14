@@ -1,5 +1,5 @@
 ---
-title: "Workflow diary"
+title: "Workflow Diary Example"
 date: 2023-04-22
 author: Your Name
 format:
