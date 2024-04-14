@@ -1,0 +1,189 @@
+---
+title: "Workflow diary"
+date: 2023-04-22
+author: Your Name
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-tools: true
+---
+
+```{r}
+#| message: false
+#| warning: false
+
+```
+
+## Getting Started
+
+### How to use this template
+
+This workflow diary template will be used for you to record your experiences, attempts, and results while you apply the Bayesian workflow steps during each week of the seminar. Each section of the template corresponds to a step in the workflow that you will applying, specifies a suggested minimum 'goal' that you should aim to complete. How you decide to implement the workflow steps and achieve these goals is completely up to you.
+
+There are no 'wrong' answers here, and you are not being graded on whether you implement the workflow steps 'correctly'. This diary should be record of your learning and experience with each workflow step, and will evolve as you learn more about the Bayesian workflow. If there are any issues or questions that you have, please record them in the diary so that we can discuss them during the in-person seminar sessions.
+
+Remember that you should be able to re-run, modify, or extend any of your code if requested during the interactive presentations.
+
+### Setting up your Environment
+
+There are a number of packages that you will need throughout this course. If you have any issues completing the setup steps below, please let us know.
+
+A small helper function that we will use to check whether a package is installed and install it if necessary is provided below:
+
+```{r}
+install_if_missing <- function(pkgs, repos = "") {
+  pkgs_missing <- pkgs[sapply(pkgs, \(pkg) !requireNamespace(pkg, quietly = TRUE))]
+  if (length(pkgs_missing) > 0) {
+    install.packages(pkgs_missing, repos = c(repos, "https://cloud.r-project.org/"))
+  }
+}
+```
+
+#### Stan: `cmdstanr`, `cmdstanr`, and `brms`
+
+For estimating Bayesian models in R, we recommend the `cmdstanr` package. You should be familiar with this if you have previously completed BDA. You can install `cmdstanr`, if it is not already installed, by running the following:
+
+```{r}
+install_if_missing("cmdstanr", repos = "https://mc-stan.org/r-packages/")
+```
+
+The `cmdstanr` package is simply a wrapper/interface for the CmdStan command-line interface to Stan, which also needs to be installed. You can run the following code to check whether CmdStan is installed and up-to-date, and install it if necessary:
+
+```{r}
+curr_ver <- cmdstanr::cmdstan_version(error_on_NA = FALSE)
+if (is.null(curr_ver) || curr_ver < cmdstanr:::latest_released_version()) {
+  cmdstanr::check_cmdstan_toolchain(fix = TRUE)
+  cmdstanr::install_cmdstan()
+}
+rm(curr_ver)
+```
+
+A more user-friendly interface to `cmdstanr` is the `brms` package, which provides a formula-based interface to specify Bayesian models. You can install `brms` by running the following:
+
+```{r}
+install_if_missing("brms")
+```
+
+#### Post-Processing and Diagnostics
+
+There are also some packages that you are likely to find useful for post-processing and diagnosing your models. These include `bayesplot`, `posterior`, `loo`, and `priorsense`. You can install these by running the following:
+
+```{r}
+install_if_missing(c("bayesplot", "loo", "posterior"))
+
+# The 'priorsense' package is not available on CRAN, so you will need to install it from GitHub:
+if (!requireNamespace("priorsense", quietly = TRUE)) {
+  install_if_missing("remotes")
+  remotes::install_github("n-kall/priorsense")
+}
+```
+
+## Bayesian Workflow
+
+### Loading Data and Preprocessing
+
+Use this section of the diary for loading your dataset of choice and performing any necessary preprocessing. This could include cleaning the data, transforming variables, or creating new variables. Remember that you should be able to re-run or modify this code if needed during the interactive presentations.
+
+```{r}
+
+```
+
+### Week 1: Exploratory Data Analysis and Choosing a Research Question
+
+#### Goal
+
+After this week, you should have:
+
+ - Decided on your research question
+ - Conducted some exploratory data analysis to understand your data
+ - Used the results of the analysis to propose an initial model for answering your research question
+
+
+#### Code and Results
+
+```{r}
+
+```
+
+### Week 2: Prior Choice
+
+#### Goal
+
+After this week, you should have:
+
+ - Proposed priors for each parameter in your model, with justification
+ - Performed a prior predictive check to ensure that your priors are reasonable
+
+
+#### Code and Results
+
+```{r}
+
+```
+
+
+### Week 3: Model Fitting and Checking
+
+#### Goal
+
+After this week, you should have:
+
+ - Fitted your model with chosen priors to your data
+ - Performed diagnostic checks for quality/stability of fitting
+ - Performed prior sensitivity assessment to ensure that your results are not driven by your choice of priors
+ - Performed predictive performance assessment
+
+
+#### Code and Results
+
+```{r}
+
+```
+
+
+### Week 4: Extending Models and Model Selection
+
+#### Goal
+
+After this week, you should have:
+
+ - Decided on whether a model expansion or selection approach is relevant for your research question, with justification
+ - Proposed a second model (or an expansion to the first), building on the issues/diagnostics/concepts from previous weeks
+
+
+#### Code and Results
+
+```{r}
+
+```
+
+
+### Week 5: Interpreting and Presenting Model Results
+
+#### Goal
+
+After this week, you should have:
+
+ - Prepared a concise summary of your results and how they answer your research question
+ - Prepared a visualisation of your results that is suitable for presentation to a non-technical audience
+
+
+#### Code and Results
+
+```{r}
+
+```
+
+### Week 6: Reflection and Future Work
+
+#### Goal
+
+After this week, you should have:
+
+ - Reflected on your experiences with the Bayesian workflow
+ - Proposed future work or extensions to your research question
+
+#### Reflections and Notes
+
+
