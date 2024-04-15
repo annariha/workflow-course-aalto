@@ -29,25 +29,16 @@ Remember that you should be able to re-run, modify, or extend any of your code i
 
 There are a number of packages that you will need throughout this course. If you have any issues completing the setup steps below, please let us know.
 
-A small helper function that we will use to check whether a package is installed and install it if necessary is provided below:
-
-```{r}
-install_if_missing <- function(pkgs) {
-  pkgs_missing <- pkgs[sapply(pkgs, \(pkg) !requireNamespace(pkg, quietly = TRUE))]
-  if (length(pkgs_missing) > 0) {
-    install.packages(pkgs_missing)
-  }
-}
-```
-
 #### Stan: `cmdstanr`, `cmdstanr`, and `brms`
 
 For estimating Bayesian models in R, we recommend the `cmdstanr` package. You should be familiar with this if you have previously completed BDA. You can install `cmdstanr`, if it is not already installed, by running the following:
 
 ```{r}
 # The 'cmdstanr' package is not available on CRAN, so you will need to install it from GitHub:
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
 if (!requireNamespace("cmdstanr", quietly = TRUE)) {
-  install_if_missing("remotes")
   remotes::install_github("stan-dev/cmdstanr")
 }
 ```
