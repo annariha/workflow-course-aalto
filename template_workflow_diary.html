@@ -204,15 +204,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <section id="how-to-use-this-template" class="level3">
 <h3 class="anchored" data-anchor-id="how-to-use-this-template">How to use this template</h3>
-<p>This workflow diary template will be used for you to record your experiences, attempts, and results while you apply the Bayesian workflow steps during each week of the seminar. Each section of the template corresponds to a step in the workflow that you will applying, specifies a suggested minimum ‘goal’ that you should aim to complete. How you decide to implement the workflow steps and achieve these goals is completely up to you.</p>
-<p>There are no ‘wrong’ answers here, and you are not being graded on whether you implement the workflow steps ‘correctly’. This diary should be record of your learning and experience with each workflow step, and will evolve as you learn more about the Bayesian workflow. If there are any issues or questions that you have, please record them in the diary so that we can discuss them during the in-person seminar sessions.</p>
+<p>This workflow diary template will be used for you to record your experiences, attempts, and results while you apply the Bayesian workflow steps during each week of the seminar. Each section of the template corresponds to a step in the workflow that you will be applying, and specifies a suggested minimum ‘goal’ that you should aim to complete. How you decide to implement the workflow steps and achieve these goals is completely up to you.</p>
+<p>There are no ‘wrong’ answers here, and you are not being graded on whether you implement the workflow steps ‘correctly’. This diary should be a record of your learning and experience with each workflow step, and will evolve as you learn more about the Bayesian workflow. If there are any issues or questions that you have, please record them in the diary so that we can discuss them during the in-person seminar sessions.</p>
 <p>Remember that you should be able to re-run, modify, or extend any of your code if requested during the interactive presentations.</p>
 </section>
 <section id="setting-up-your-environment" class="level3">
 <h3 class="anchored" data-anchor-id="setting-up-your-environment">Setting up your Environment</h3>
 <p>There are a number of packages that you will need throughout this course. If you have any issues completing the setup steps below, please let us know.</p>
-<section id="stan-cmdstanr-cmdstanr-and-brms" class="level4">
-<h4 class="anchored" data-anchor-id="stan-cmdstanr-cmdstanr-and-brms">Stan: <code>cmdstanr</code>, <code>cmdstanr</code>, and <code>brms</code></h4>
+<section id="stan-cmdstanr-cmdstan-and-brms" class="level4">
+<h4 class="anchored" data-anchor-id="stan-cmdstanr-cmdstan-and-brms">Stan: <code>cmdstanr</code>, <code>cmdstan</code>, and <code>brms</code></h4>
 <p>For estimating Bayesian models in R, we recommend the <code>cmdstanr</code> package. You should be familiar with this if you have previously completed BDA. You can install <code>cmdstanr</code>, if it is not already installed, by running the following:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The 'cmdstanr' package is not available on CRAN, so you will need to install it from GitHub:</span></span>
@@ -232,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(curr_ver)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A more user-friendly interface to <code>cmdstanr</code> is the <code>brms</code> package, which provides a formula-based interface to specify Bayesian models. You can install <code>brms</code> by running the following:</p>
+<p>A more user-friendly interface to <code>cmdstanr</code> is the <code>brms</code> package, which provides a formula-based interface to specify Bayesian models. You can install <code>brms</code> by running:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"brms"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"brms"</span>)</span>
@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Fitted your model with chosen priors to your data</li>
 <li>Performed diagnostic checks for quality/stability of fitting</li>
-<li>Performed prior sensitivity assessment to ensure that your results are not driven by your choice of priors</li>
+<li>Performed prior sensitivity assessment</li>
 <li>Performed predictive performance assessment</li>
 </ul>
 </section>
@@ -851,9 +851,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="fu">### How to use this template</span></span>
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>This workflow diary template will be used for you to record your experiences, attempts, and results while you apply the Bayesian workflow steps during each week of the seminar. Each section of the template corresponds to a step in the workflow that you will applying, specifies a suggested minimum 'goal' that you should aim to complete. How you decide to implement the workflow steps and achieve these goals is completely up to you.</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>This workflow diary template will be used for you to record your experiences, attempts, and results while you apply the Bayesian workflow steps during each week of the seminar. Each section of the template corresponds to a step in the workflow that you will be applying, and specifies a suggested minimum 'goal' that you should aim to complete. How you decide to implement the workflow steps and achieve these goals is completely up to you.</span>
 <span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>There are no 'wrong' answers here, and you are not being graded on whether you implement the workflow steps 'correctly'. This diary should be record of your learning and experience with each workflow step, and will evolve as you learn more about the Bayesian workflow. If there are any issues or questions that you have, please record them in the diary so that we can discuss them during the in-person seminar sessions.</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>There are no 'wrong' answers here, and you are not being graded on whether you implement the workflow steps 'correctly'. This diary should be a record of your learning and experience with each workflow step, and will evolve as you learn more about the Bayesian workflow. If there are any issues or questions that you have, please record them in the diary so that we can discuss them during the in-person seminar sessions.</span>
 <span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>Remember that you should be able to re-run, modify, or extend any of your code if requested during the interactive presentations.</span>
 <span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
@@ -861,7 +861,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>There are a number of packages that you will need throughout this course. If you have any issues completing the setup steps below, please let us know.</span>
 <span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Stan: `cmdstanr`, `cmdstanr`, and `brms`</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Stan: `cmdstanr`, `cmdstan`, and `brms`</span></span>
 <span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>For estimating Bayesian models in R, we recommend the <span class="in">`cmdstanr`</span> package. You should be familiar with this if you have previously completed BDA. You can install <span class="in">`cmdstanr`</span>, if it is not already installed, by running the following:</span>
 <span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a></span>
@@ -886,7 +886,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(curr_ver)</span>
 <span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>A more user-friendly interface to <span class="in">`cmdstanr`</span> is the <span class="in">`brms`</span> package, which provides a formula-based interface to specify Bayesian models. You can install <span class="in">`brms`</span> by running the following:</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>A more user-friendly interface to <span class="in">`cmdstanr`</span> is the <span class="in">`brms`</span> package, which provides a formula-based interface to specify Bayesian models. You can install <span class="in">`brms`</span> by running:</span>
 <span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"brms"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
@@ -958,7 +958,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Fitted your model with chosen priors to your data</span>
 <span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed diagnostic checks for quality/stability of fitting</span>
-<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed prior sensitivity assessment to ensure that your results are not driven by your choice of priors</span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed prior sensitivity assessment</span>
 <span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>Performed predictive performance assessment</span>
 <span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a></span>
