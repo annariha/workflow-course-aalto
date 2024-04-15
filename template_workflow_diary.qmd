@@ -19,9 +19,9 @@ format:
 
 ### How to use this template
 
-This workflow diary template will be used for you to record your experiences, attempts, and results while you apply the Bayesian workflow steps during each week of the seminar. Each section of the template corresponds to a step in the workflow that you will applying, specifies a suggested minimum 'goal' that you should aim to complete. How you decide to implement the workflow steps and achieve these goals is completely up to you.
+This workflow diary template will be used for you to record your experiences, attempts, and results while you apply the Bayesian workflow steps during each week of the seminar. Each section of the template corresponds to a step in the workflow that you will be applying, and specifies a suggested minimum 'goal' that you should aim to complete. How you decide to implement the workflow steps and achieve these goals is completely up to you.
 
-There are no 'wrong' answers here, and you are not being graded on whether you implement the workflow steps 'correctly'. This diary should be record of your learning and experience with each workflow step, and will evolve as you learn more about the Bayesian workflow. If there are any issues or questions that you have, please record them in the diary so that we can discuss them during the in-person seminar sessions.
+There are no 'wrong' answers here, and you are not being graded on whether you implement the workflow steps 'correctly'. This diary should be a record of your learning and experience with each workflow step, and will evolve as you learn more about the Bayesian workflow. If there are any issues or questions that you have, please record them in the diary so that we can discuss them during the in-person seminar sessions.
 
 Remember that you should be able to re-run, modify, or extend any of your code if requested during the interactive presentations.
 
@@ -29,7 +29,7 @@ Remember that you should be able to re-run, modify, or extend any of your code i
 
 There are a number of packages that you will need throughout this course. If you have any issues completing the setup steps below, please let us know.
 
-#### Stan: `cmdstanr`, `cmdstanr`, and `brms`
+#### Stan: `cmdstanr`, `cmdstan`, and `brms`
 
 For estimating Bayesian models in R, we recommend the `cmdstanr` package. You should be familiar with this if you have previously completed BDA. You can install `cmdstanr`, if it is not already installed, by running the following:
 
@@ -54,7 +54,7 @@ if (is.null(curr_ver) || curr_ver < cmdstanr:::latest_released_version()) {
 rm(curr_ver)
 ```
 
-A more user-friendly interface to `cmdstanr` is the `brms` package, which provides a formula-based interface to specify Bayesian models. You can install `brms` by running the following:
+A more user-friendly interface to `cmdstanr` is the `brms` package, which provides a formula-based interface to specify Bayesian models. You can install `brms` by running:
 
 ```{r}
 if (!requireNamespace("brms", quietly = TRUE)) {
@@ -126,7 +126,7 @@ After this week, you should have:
 
  - Fitted your model with chosen priors to your data
  - Performed diagnostic checks for quality/stability of fitting
- - Performed prior sensitivity assessment to ensure that your results are not driven by your choice of priors
+ - Performed prior sensitivity assessment
  - Performed predictive performance assessment
 
 
