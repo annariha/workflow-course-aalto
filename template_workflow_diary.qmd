@@ -90,9 +90,13 @@ Use this section of the diary for loading your dataset of choice and performing 
 
 After this week, you should have:
 
- - Decided on your research question
- - Conducted some exploratory data analysis to understand your data
- - Used the results of the analysis to propose an initial model for answering your research question
+- Setting up your project, for example, using the provided templates
+- Formulating a research question \& finding a dataset
+- Visualising and getting familiar with characteristics of your data (e.g., range, data types)
+- Adding your first notes and visualisations to the workflow diary
+- Picking an initial model \& documenting your reasoning and the strategies you used to choose it
+- Obtaining posterior samples using your initial model with default priors
+- Documenting what you observe and any issues you encounter in the workflow diary
 
 
 #### Code and Results
@@ -170,15 +174,12 @@ After this week, you should have:
 # Your code here
 ```
 
-### Week 6: Reflection and Future Work
+### Week 6: Final Notebook
 
 #### Goal
 
 After this week, you should have:
 
- - Reflected on your experiences with the Bayesian workflow
- - Proposed future work or extensions to your research question
-
-#### Reflections and Notes
-
+ - Prepared a separate notebook summarising your analysis and results in the form of a case study
+   - Be sure to use the case studies provided in this course to guide you
 
