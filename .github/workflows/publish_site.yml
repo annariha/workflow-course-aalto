@@ -29,7 +29,15 @@ jobs:
       - name: Install dependencies
         uses: r-lib/actions/setup-renv@v2
 
+      - name: Cache CmdStan
+        id: cache-cmdstan
+        uses: actions/cache@v4
+        with:
+          path: ~/.cmdstan
+          key: gha-cmdstan
+
       - name: Setup cmdstan for diary template
+        if: steps.cache-cmdstan.outputs.cache-hit != 'true'
         run: cmdstanr::install_cmdstan(cores = 2)
         shell: Rscript {0}
 
