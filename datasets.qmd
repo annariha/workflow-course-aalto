@@ -16,3 +16,7 @@ The `metadat` package also provides a large range of meta-analysis datasets: [`m
 ### 'Awesome Public Datasets' Repository
 
 The 'Awesome Public Datasets' GitHub repository provides a large number of datasets from multiple fields and study types: [Awesome Public Datasets](https://github.com/awesomedata/awesome-public-datasets)
+
+### `medicaldata` R Package
+
+The `medicaldata` package provides several medical datasets: [`medicaldata`](https://higgi13425.github.io/medicaldata/)
