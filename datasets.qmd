@@ -18,4 +18,10 @@ The `metadat` package also provides a large range of meta-analysis datasets: [`m
 The 'Awesome Public Datasets' GitHub repository provides a large number of datasets from multiple fields and study types: [Awesome Public Datasets](https://github.com/awesomedata/awesome-public-datasets)
 
 ### Minimum Wage Study (Causal Inference)
+
 This is a classic example from economics in which interest lies in the causal effect of unemployment benefits on employment: here a link to a [vignette](https://aaronmams.github.io/Card-Krueger-Replication/) that that replicates the [original paper's](https://davidcard.berkeley.edu/papers/njmin-aer.pdf) analysis
+
+### `medicaldata` R Package
+
+The `medicaldata` package provides several medical datasets: [`medicaldata`](https://higgi13425.github.io/medicaldata/)
+
