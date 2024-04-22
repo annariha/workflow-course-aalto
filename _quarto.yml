@@ -7,8 +7,10 @@ website:
     left:
       - href: materials.qmd
         text: Schedule and Content
+      - href: datasets.qmd
+        text: Datasets for Analysis
       - href: template_workflow_diary.qmd 
-        text: Workflow diary 
+        text: Workflow Diary Template
 
 format:
   html:
