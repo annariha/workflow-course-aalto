@@ -1,0 +1,18 @@
+---
+title: "Analysis Dataset Options"
+---
+
+If you do not have a dataset or research problem that you are bringing to the course, below are some options. If you have previously completed BDA, you can use your dataset/project - as long as you are meaningfully expanding on the analyses and research question.
+
+#### `metafor` Analysis Examples
+
+The website for the `metafor` R package provides a large list of datasets and references for meta-analyses: [Analysis Examples](https://www.metafor-project.org/doku.php/analyses)
+
+#### `metadat` R Package
+
+The `metadat` package also provides a large range of meta-analysis datasets: [`metadat`](https://wviechtb.github.io/metadat/)
+
+
+#### 'Awesome Public Datasets' Repository
+
+The 'Awesome Public Datasets' GitHub repository provides a large number of datasets from multiple fields and study types: [Awesome Public Datasets](https://github.com/awesomedata/awesome-public-datasets)
