@@ -253,9 +253,6 @@ poisson_ranef_fit$draws() |>
 
 ppc_pit_ecdf(y = epilepsy_standata$seizures,
                  poisson_ranef_fit$draws("ypred", format = "draws_matrix"))
-
-dr <- posterior::subset_draws(poisson_ranef_fit$draws("ypred", format = "draws_matrix"),draw = 1:20)
-ppc_dens_overlay(y = epilepsy_standata$seizures, dr)
 ```
 
 \
