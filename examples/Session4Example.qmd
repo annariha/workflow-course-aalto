@@ -1,0 +1,646 @@
+---
+title: "Session 4 Example"
+format:
+  html:
+    embed-resources: true
+editor: visual
+---
+
+```{r setup, include=FALSE}
+cmdstanr::register_knitr_engine(override = FALSE)
+```
+
+## Preparation
+
+In this tutorial we will be using the [cmdstanr](https://mc-stan.org/cmdstanr/articles/cmdstanr.html) R interface to CmdStan and the [bayesplot](https://mc-stan.org/bayesplot/articles/graphical-ppcs.html) package for our graphical model checking:
+
+```{r,results=FALSE,warning=FALSE,message=FALSE}
+library(cmdstanr)
+library(posterior)
+library(bayesplot)
+library(ggplot2)
+library(dplyr)
+```
+
+## Epilepsy RCT Model Expansion
+
+For this example, we are analysing the results of a randomised controlled trial for a new epilepsy treatment. To briefly summarise our data:
+
+-   59 participants randomised to either treatment or control
+-   5 assessments (baseline + 4 follow-ups)
+-   Outcome is the number of seizures experienced
+
+### Data
+
+Let's load our dataset and look at the general structure:
+
+```{r}
+data(epilepsy, package="brms")
+head(epilepsy)
+```
+
+Note that the continuous covariates have been standardised to simplify prior specification - this might not always be appropriate!
+
+### Initial Model
+
+What do we believe will be related to the seizure counts in our trial?
+
+-   Treatment or Control group
+-   Time since beginning treatment
+    -   Different between treatment & control
+-   Baseline number of seizures
+-   Age of participant
+
+In R formula notation:
+
+```         
+count ~ Trt + visit + Trt*visit + zBase + zAge
+```
+
+```{r}
+epilepsy_prep <- epilepsy |>
+  mutate(Trt = as.numeric(Trt) - 1,
+         visit = as.numeric(visit) - 1,
+         treat_x_visit = Trt * visit)
+```
+
+```{r}
+epilepsy_standata <- list(
+  N = length(unique(epilepsy_prep$patient)),
+  T = length(unique(epilepsy_prep$visit)),
+  K = 5,
+  ID = epilepsy_prep$patient,
+  x = epilepsy_prep[,c("Trt", "visit", "treat_x_visit", "zAge", "zBase")],
+  seizures = epilepsy_prep$count
+)
+```
+
+#### Outcome Family
+
+Given that we are modelling counts, a Poisson is a good start. When using a Poisson outcome in a General Linear Model (GLM), we commonly use a log link function:
+
+$$
+\displaylines{
+  y_i \sim Poisson(\lambda_i) \\
+  \lambda_i = \exp(\alpha + x_i^T\beta)
+}
+$$
+
+#### Priors
+
+We will use weakly-informative priors (regularise our estimates to feasible/possible values). Because the intercept and coefficients are on the log-scale, the interpretation and choice of priors is slightly different
+
+#### Stan Model
+
+We've decided to use a Poisson Generalised Linear Model with a log-link as our initial attempt for modelling the data:
+
+$$
+  \displaylines{
+  y_i \sim Poisson(\lambda_i) \\
+  \lambda_i = \exp(\alpha + x_i^T\beta) \\
+  \alpha \sim N(0,5) \\
+  \beta_{1:5} \sim N(0,1)
+}
+$$
+
+Let's have a look at how we would specify this in Stan:
+
+```{cmdstan, output.var = "poisson_mod"}
+data {
+  int N;
+  int T;
+  int K;
+  array[N*T] int ID;
+  matrix[N*T, K] x;
+  array[N*T] int seizures;
+}
+
+parameters {
+  real alpha;
+  vector[K] beta;
+}
+
+transformed parameters {
+  vector[N*T] lambda = alpha + x * beta;
+}
+
+model {
+  alpha ~ normal(0, 5);
+  beta ~ std_normal();
+  seizures ~ poisson_log(lambda);
+}
+
+generated quantities {
+  array[N*T] int ypred = poisson_log_rng(lambda);
+  vector[N*T] log_lik;
+  for (nt in 1:(N*T)) {
+    log_lik[nt] = poisson_log_lpmf(seizures[nt] | lambda[nt]);
+  }
+}
+```
+
+```{r, message=FALSE}
+poisson_fit <- poisson_mod$sample(
+  data = epilepsy_standata,
+  parallel_chains = 4,
+  refresh = 0,
+  show_messages = FALSE,
+  show_exceptions = FALSE,
+  seed = 2024
+)
+```
+
+To inspect our estimates, we'll first rename and transform them back to the interpretable scale (exponentiating):
+
+```{r}
+poisson_fit$draws() |>
+    mutate_variables(intercept = exp(alpha),
+                     b_treat = exp(`beta[1]`), 
+                     b_visit = exp(`beta[2]`), 
+                     b_treat_x_visit = exp(`beta[3]`), 
+                     b_zAge = exp(`beta[4]`), 
+                     b_zBase = exp(`beta[5]`)) |>
+    subset_draws(variable=c("intercept", "b_treat", "b_visit", "b_treat_x_visit", "b_zAge", "b_zBase")) |>
+    summarise_draws()
+```
+
+We can see that all R-hats and ESS are within acceptable ranges. Next, we check the posterior-predictives for any obvious issues:
+
+```{r}
+ppc_pit_ecdf(y = epilepsy_standata$seizures,
+                 poisson_fit$draws("ypred", format = "draws_matrix"))
+```
+
+We can see that the model is clearly inappropriate for the current dataset.
+
+### Random-Effects Model (Normal)
+
+We'll add a random intercept for each individual, to relax the assumption of equal mean and variance in the Poisson. This also helps account for the non-independence of the observations - there are repeated measurements for the same individual:
+
+$$
+  \displaylines{
+  y_i \sim Poisson(\lambda_i) \\
+  \lambda_i = \exp(\alpha + x_i^T\beta  + u_i) \\
+  \alpha \sim N(0,5) \\
+  \beta_{1:5} \sim N(0,1) \\
+  u_i \sim N(0,\sigma) \\
+  \sigma \sim Cauchy^+(0,5)
+}
+$$
+
+```{cmdstan, output.var = "poisson_ranef_mod"}
+data {
+  int N;
+  int T;
+  int K;
+  array[N*T] int ID;
+  matrix[N*T, K] x;
+  array[N*T] int seizures;
+}
+
+parameters {
+  real alpha;
+  vector[K] beta;
+  real<lower=0> u_sd;
+  vector[N] u;
+}
+
+transformed parameters {
+  vector[N*T] lambda = u[ID] + alpha + x * beta;
+}
+
+model {
+  alpha ~ normal(0, 5);
+  beta ~ std_normal();
+  u_sd ~ cauchy(0, 5);
+  u ~ normal(0, u_sd);
+  seizures ~ poisson_log(lambda);
+}
+
+generated quantities {
+  array[N*T] int ypred = poisson_log_rng(lambda);
+  vector[N*T] log_lik;
+  for (nt in 1:(N*T)) {
+    log_lik[nt] = poisson_log_lpmf(seizures[nt] | lambda[nt]);
+  }
+}
+```
+
+```{r}
+poisson_ranef_fit <- poisson_ranef_mod$sample(
+  data = epilepsy_standata,
+  parallel_chains = 4,
+  refresh = 0,
+  show_messages = FALSE,
+  show_exceptions = FALSE,
+  seed = 2024
+)
+```
+
+We can see again that the Rhats & ESS are still acceptable (slightly worse ESS, but we'll get to that!), but the posterior-predictive check is much better.
+
+```{r}
+poisson_ranef_fit$draws() |>
+    mutate_variables(intercept = exp(alpha),
+                     b_treat = exp(`beta[1]`), 
+                     b_visit = exp(`beta[2]`), 
+                     b_treat_x_visit = exp(`beta[3]`), 
+                     b_zAge = exp(`beta[4]`), 
+                     b_zBase = exp(`beta[5]`)) |>
+    subset_draws(variable=c("intercept", "b_treat", "b_visit", "b_treat_x_visit", "b_zAge", "b_zBase")) |>
+    summarise_draws()
+
+
+ppc_pit_ecdf(y = epilepsy_standata$seizures,
+                 poisson_ranef_fit$draws("ypred", format = "draws_matrix"))
+
+dr <- posterior::subset_draws(poisson_ranef_fit$draws("ypred", format = "draws_matrix"),draw = 1:20)
+ppc_dens_overlay(y = epilepsy_standata$seizures, dr)
+```
+
+\
+The model is now better able to represent the observed data, but we are now estimating an additional $N$ parameters and the lower ESS indicates poorer exploration.
+
+What can we do about this?
+
+### Random-Effects Model (Gamma)
+
+Let's change our normally-distributed random effect to a Gamma with equal shape and rate parameters:
+
+$$
+  \displaylines{
+  y_i \sim Poisson(\lambda_i) \\
+  \lambda_i = \exp(\alpha + x_i^T\beta  + u_i) \\
+  \alpha \sim N(0,5) \\
+  \beta_{1:5} \sim N(0,1) \\
+  \theta_i \sim Gamma(\phi,\phi) \\
+  \phi \sim Cauchy^+(0,5)
+}
+$$
+
+```{cmdstan, output.var = "poisson_gamma_mod"}
+data {
+  int N;
+  int T;
+  int K;
+  array[N*T] int ID;
+  matrix[N*T, K] x;
+  array[N*T] int seizures;
+}
+
+parameters {
+  real alpha;
+  vector[K] beta;
+  real<lower=0> u_shape;
+  vector<lower=0>[N] u;
+}
+
+transformed parameters {
+  vector[N*T] lambda = log(u[ID]) + alpha + x * beta;
+}
+
+model {
+  alpha ~ normal(0, 5);
+  beta ~ std_normal();
+  u_shape ~ cauchy(0, 5);
+  u ~ gamma(u_shape, u_shape);
+  seizures ~ poisson_log(lambda);
+}
+
+generated quantities {
+  array[N*T] int ypred = poisson_log_rng(lambda);
+  vector[N*T] log_lik;
+  for (nt in 1:(N*T)) {
+    log_lik[nt] = poisson_log_lpmf(seizures[nt] | lambda[nt]);
+  }
+}
+```
+
+```{r}
+poisson_gamma_fit <- poisson_gamma_mod$sample(
+  data = epilepsy_standata,
+  parallel_chains = 4,
+  refresh = 0,
+  show_messages = FALSE,
+  show_exceptions = FALSE,
+  seed = 2024
+)
+```
+
+```{r}
+poisson_gamma_fit$draws() |>
+    mutate_variables(intercept = exp(alpha),
+                     b_treat = exp(`beta[1]`), 
+                     b_visit = exp(`beta[2]`), 
+                     b_treat_x_visit = exp(`beta[3]`), 
+                     b_zAge = exp(`beta[4]`), 
+                     b_zBase = exp(`beta[5]`)) |>
+    subset_draws(variable=c("intercept", "b_treat", "b_visit", "b_treat_x_visit", "b_zAge", "b_zBase")) |>
+    summarise_draws()
+
+ppc_pit_ecdf(y = epilepsy_standata$seizures,
+                 poisson_gamma_fit$draws("ypred", format = "draws_matrix"))
+```
+
+Still looking good! But what's the point?
+
+### Random-Effects (Negative-Binomial)
+
+Remember that we can represent the Poisson with a Gamma-distributed random effect as a Negative-Binomial parameterised by its mean and dispersion:
+
+$$
+\int Poisson(y | \lambda\theta) \cdot Gamma(\theta | \phi, \phi) d\theta = NB(y|\lambda, \phi)
+$$
+
+But don't just take my word for it, let's verify this in R by comparing the numerically integrated Poisson-Gamma with the Negative-Binomial:
+
+```{r}
+lambda <- 2.65
+y <- 4
+phi <- 1.5
+
+poisson_gamma_pdf <- function(theta, y, lambda, phi) {
+  exp(dpois(y, lambda * theta, log = TRUE) + dgamma(theta, shape = phi, rate = phi, log = TRUE))
+}
+
+integrate(poisson_gamma_pdf, 0, Inf, y, lambda, phi)
+dnbinom(y, mu = lambda, size = phi)
+```
+
+This means that we can express our random-effects model without needing to estimate the additional $N$ parameters! Let's see that in Stan:
+
+```{cmdstan, output.var = "nb_mod"}
+data {
+  int N;
+  int T;
+  int K;
+  array[N*T] int ID;
+  matrix[N*T, K] x;
+  array[N*T] int seizures;
+}
+
+parameters {
+  real alpha;
+  vector[K] beta;
+  real<lower=0> u_shape;
+}
+
+transformed parameters {
+  vector[N*T] lambda = alpha + x * beta;
+}
+
+model {
+  alpha ~ normal(0, 5);
+  beta ~ std_normal();
+  u_shape ~ cauchy(0, 5);
+  seizures ~ neg_binomial_2_log(lambda, u_shape);
+}
+
+generated quantities {
+  array[N*T] int ypred = neg_binomial_2_log_rng(lambda, u_shape);
+  vector[N*T] log_lik;
+  for (nt in 1:(N*T)) {
+    log_lik[nt] = neg_binomial_2_log_lpmf(seizures[nt] | lambda[nt], u_shape);
+  }
+}
+```
+
+```{r}
+nb_fit <- nb_mod$sample(
+  data = epilepsy_standata,
+  parallel_chains = 4,
+  refresh = 0,
+  show_messages = FALSE,
+  show_exceptions = FALSE,
+  seed = 2024
+)
+```
+
+```{r}
+nb_fit$draws() |>
+    mutate_variables(intercept = exp(alpha),
+                     b_treat = exp(`beta[1]`), 
+                     b_visit = exp(`beta[2]`), 
+                     b_treat_x_visit = exp(`beta[3]`), 
+                     b_zAge = exp(`beta[4]`), 
+                     b_zBase = exp(`beta[5]`)) |>
+    subset_draws(variable=c("intercept", "b_treat", "b_visit", "b_treat_x_visit", "b_zAge", "b_zBase")) |>
+    summarise_draws()
+
+ppc_pit_ecdf(y = epilepsy_standata$seizures,
+                 nb_fit$draws("ypred", format = "draws_matrix"))
+```
+
+We can see that the estimates and PPC results are consistent with the previous random-effects (Gamma) model, but the ESS are much improved.
+
+Could we do better if we were concerned about efficiency?
+
+### Random-Effects (Negative-Binomial GLM)
+
+```{cmdstan, output.var = "nb_glm_mod"}
+data {
+  int N;
+  int T;
+  int K;
+  array[N*T] int ID;
+  matrix[N*T, K] x;
+  array[N*T] int seizures;
+}
+
+parameters {
+  real alpha;
+  vector[K] beta;
+  real<lower=0> u_shape;
+}
+
+model {
+  alpha ~ normal(0, 5);
+  beta ~ std_normal();
+  u_shape ~ cauchy(0, 5);
+  seizures ~ neg_binomial_2_log_glm(x, alpha, beta, u_shape);
+}
+
+generated quantities {
+  vector[N*T] lambda = alpha + x * beta;
+  array[N*T] int ypred = neg_binomial_2_log_rng(lambda, u_shape);
+  vector[N*T] log_lik;
+  for (nt in 1:(N*T)) {
+    log_lik[nt] = neg_binomial_2_log_lpmf(seizures[nt] | lambda[nt], u_shape);
+  }
+}
+```
+
+```{r}
+nb_glm_fit <- nb_glm_mod$sample(
+  data = epilepsy_standata,
+  parallel_chains = 4,
+  refresh = 0,
+  show_messages = FALSE,
+  show_exceptions = FALSE,
+  seed = 2024
+)
+```
+
+```{r}
+nb_glm_fit$draws() |>
+    mutate_variables(intercept = exp(alpha),
+                     b_treat = exp(`beta[1]`), 
+                     b_visit = exp(`beta[2]`), 
+                     b_treat_x_visit = exp(`beta[3]`), 
+                     b_zAge = exp(`beta[4]`), 
+                     b_zBase = exp(`beta[5]`)) |>
+    subset_draws(variable=c("intercept", "b_treat", "b_visit", "b_treat_x_visit", "b_zAge", "b_zBase")) |>
+    summarise_draws()
+
+
+ppc_pit_ecdf(y = epilepsy_standata$seizures,
+                 nb_glm_fit$draws("ypred", format = "draws_matrix"))
+```
+
+We can see that the results are consistent, but now the GLM model is the fastest:
+
+```{r}
+poisson_ranef_fit$time()$total
+poisson_gamma_fit$time()$total
+nb_fit$time()$total
+nb_glm_fit$time()$total
+```
+
+### Selecting Models
+
+Let's investigate whether we want to keep our Random-Effects (Normal) or Random-Effects (Negative-Binomial) model.
+
+#### Explanation
+
+Do our inferences for the treatment effect differ between the two models?
+
+```{r}
+poisson_ranef_fit$draws() |>
+    mutate_variables(b_treat = exp(`beta[1]`),
+                     b_treat_x_visit = exp(`beta[3]`)) |>
+    subset_draws(variable=c("b_treat", "b_treat_x_visit")) |>
+    summarise_draws()
+```
+
+```{r}
+nb_fit$draws() |>
+    mutate_variables(b_treat = exp(`beta[1]`),
+                     b_treat_x_visit = exp(`beta[3]`)) |>
+    subset_draws(variable=c("b_treat", "b_treat_x_visit")) |>
+    summarise_draws()
+```
+
+We can see that estimated effects are slightly larger for the negative-binomial model, although both have similar amounts of uncertainty (width of credibility intervals). Additionally, the much-reduced ESS of the random-effects (normal) model reduces our confidence in the estimates.
+
+If our goal was Explanation/Inference, we would likely select the Negative-Binomial.
+
+#### Prediction
+
+Can one of the models better predict new data than the other? We will use appromixate LOO-CV to investigate this.
+
+```{r}
+poisson_ranef_loo <- poisson_ranef_fit$loo()
+poisson_ranef_loo
+plot(poisson_ranef_loo)
+```
+
+Looks like the PSIS algorithm is having difficulty approximating the leave-one-out performance any guesses why?
+
+Let's integrate the normal random effect out of our predictive density:
+
+```{cmdstan, output.var="poisson_ranef_int_mod"}
+functions {
+  real poisson_integrand(real u, real notused, array[] real theta,
+               array[] real X_i, array[] int y_i) {
+    real u_sd = theta[1];
+    real lambda_minus_u = theta[2];
+    real p = exp(normal_lpdf(u | 0, u_sd) + poisson_log_lpmf(y_i | u + lambda_minus_u));
+    return (is_inf(p) || is_nan(p)) ? 0 : p;
+  }
+  real poisson_log_integrated_lpmf(int y, real lambda_minus_u, real u_sd) {
+    real pmf =
+      integrate_1d(poisson_integrand, negative_infinity(), positive_infinity(),
+                   {u_sd, lambda_minus_u}, {0}, {y});
+    
+    return log(pmf);
+  }
+}
+
+data {
+  int N;
+  int T;
+  int K;
+  array[N*T] int ID;
+  matrix[N*T, K] x;
+  array[N*T] int seizures;
+}
+
+parameters {
+  real alpha;
+  vector[K] beta;
+  real<lower=0> u_sd;
+  vector[N] u;
+}
+
+transformed parameters {
+  vector[N*T] lambda = u[ID] + alpha + x * beta;
+}
+
+model {
+  alpha ~ normal(0, 5);
+  beta ~ std_normal();
+  u_sd ~ cauchy(0, 5);
+  u ~ normal(0, u_sd);
+  seizures ~ poisson_log(lambda);
+}
+
+generated quantities {
+  array[N*T] int ypred = poisson_log_rng(lambda);
+  vector[N*T] log_lik;
+  for (nt in 1:(N*T)) {
+    log_lik[nt] = poisson_log_integrated_lpmf(seizures[nt] | (lambda - u[ID])[nt], u_sd);
+  }
+}
+
+```
+
+```{r}
+poisson_ranef_int_fit <- poisson_ranef_int_mod$sample(
+  data = epilepsy_standata,
+  parallel_chains = 4,
+  refresh = 0,
+  show_messages = FALSE,
+  show_exceptions = FALSE,
+  seed = 2024
+)
+```
+
+Let's try our LOO results again:
+
+```{r}
+poisson_ranef_loo <- poisson_ranef_int_fit$loo()
+poisson_ranef_loo
+plot(poisson_ranef_loo)
+```
+
+Even with integration, we still have a problematic data point. The next step is to try to use LOO with moment-matching to resolve this:
+
+```{r}
+poisson_ranef_loo <- poisson_ranef_int_fit$loo(moment_match = TRUE)
+poisson_ranef_loo
+plot(poisson_ranef_loo)
+```
+
+Much better! Now we can compare against our Negative-Binomial:
+
+```{r}
+nb_loo <- nb_fit$loo()
+nb_loo
+plot(nb_loo)
+```
+
+```{r}
+loo::loo_compare(list("Poisson" = poisson_ranef_loo, "Negative-Binomial" = nb_loo))
+```
+
+It looks like there is no meaningful difference in predictive performance between the two models. What should we do now?

@@ -11,7 +11,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 | Session 1 | [Slides](slides/session1.pdf) | 22 April 2024 |
 | Session 2 | [Slides](slides/session2.pdf) | 29 April 2024 |
 | Session 3 | [Slides](slides/session3.pdf) | 06 May 2024 |
-| Session 4 | Slides | 13 May 2024 |
+| Session 4 | [Slides](slides/session4.pdf) [Example](examples/Session4Example.html) [Example Source](examples/Session4Example.qmd) | 13 May 2024 |
 | Session 5 | Slides | 20 May 2024 |
 | Session 6 | Slides | 27 May 2024 |
 | Session 7 | Slides | 3 June 2024 |
