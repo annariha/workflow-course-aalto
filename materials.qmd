@@ -86,6 +86,8 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 
 ##### Recommended Reading Before Session
 
+  - A talk on "Why not to be afraid of priors (too much)" by Paul-Christian Bürkner at Bayes@Lund 2018: [slides](https://bayesat.github.io/lund2018/slides/paul_burkner_prior_slides.pdf) [video recording](https://www.youtube.com/watch?v=Uz9r8eV2erQ)
+  
 ### Session 4: Model Checking: Posterior Predictive Checks & Calibration
 
 ##### Learning Outcomes for the Session
