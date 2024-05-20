@@ -38,7 +38,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
     - For students without their own
   - Exploratory data analysis in Bayesian Workflow
 
-##### Recommended Reading Before Session
+##### Recommended Reading for Next Session
 
   - Bayesian Workflow (Gelman, et al., 2020)
     - https://arxiv.org/abs/2011.01808
@@ -60,7 +60,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
   - Literature and best-practices can also help with model development
     - Using either an example or a student's dataset/problem as an example
 
-##### Recommended Reading Before Session
+##### Recommended Reading for Next Session
 
   - Iterative Model Building (Aki Vehtari)
     - https://www.youtube.com/watch?v=ppKpwtGy8KQ
@@ -84,7 +84,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
     - Prior predictive checks
   - How to revise/modify a prior (if needed)
 
-##### Recommended Reading Before Session
+##### Recommended Reading for Next Session
 
   - A talk on "Why not to be afraid of priors (too much)" by Paul-Christian Bürkner at Bayes@Lund 2018: [slides](https://bayesat.github.io/lund2018/slides/paul_burkner_prior_slides.pdf) [video recording](https://www.youtube.com/watch?v=Uz9r8eV2erQ)
   
@@ -103,7 +103,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
     - Posterior predictive checks
     - Calibration
 
-##### Recommended Reading Before Session
+##### Recommended Reading for Next Session
 
 ### Session 5: Extending Models and Model Selection
 
@@ -121,8 +121,13 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
   - Alternatives to model selection
     - e.g., model averaging
 
-##### Recommended Reading Before Session
+##### Recommended Reading for Next Session
 
+  - [Poststratification](https://mc-stan.org/docs/stan-users-guide/poststratification.html) in Stan User's Guide
+  - A talk on "A biased tour of the uncertainty visualization zoo" by Matthew Kay: [video recording](https://www.youtube.com/watch?v=eyLxh_YY3Hw)
+  - [Case study](https://users.aalto.fi/~ave/casestudies/Digits/digits.html) by Aki Vehtari on reporting the correct number of digits 
+  - A paper on "The only thing that can stop bad causal inference is good causal inference" on by Rohrer, Schmukle, & McElreath (2022) [link to pdf](https://doi.org/10.1017/S0140525X21000789)
+  
 ### Session 6: Interpreting and Presenting Model Results
 
 ##### Learning Outcomes for the Session
@@ -141,7 +146,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
   - Brief introduction to alternative methods for constructing and reporting alternative models
     - e.g., Multiverse analysis
 
-##### Recommended Reading Before Session
+##### Recommended Reading for Next Session
 
 ### Session 7: Summary & Presentations
 
