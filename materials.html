@@ -154,7 +154,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="schedule-overview" class="level1">
 <h1>Schedule Overview</h1>
-<p>The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:15-16:00 in R030/A133 T5.</p>
+<p>The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:15-16:00 in R030/A133 T5 in CS building.</p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -191,12 +191,12 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Session 6</td>
-<td style="text-align: left;">Slides</td>
+<td style="text-align: left;"><a href="slides/session6.pdf">Slides</a></td>
 <td style="text-align: center;">27 May 2024</td>
 </tr>
 <tr class="odd">
 <td>Session 7</td>
-<td style="text-align: left;">Slides</td>
+<td style="text-align: left;">Final presentations</td>
 <td style="text-align: center;">3 June 2024</td>
 </tr>
 </tbody>
@@ -238,6 +238,9 @@ ul.task-list li input[type="checkbox"] {
 <h5 class="anchored" data-anchor-id="recommended-resources-for-next-session">Recommended Resources for Next Session</h5>
 <ul>
 <li>A preprint on “Bayesian Workflow” by Gelman et al.&nbsp;(2020) <a href="https://arxiv.org/abs/2011.01808">arXiv</a></li>
+<li>A talk on iterative model building and Bayesian workflows by Aki Vehtari: <a href="https://www.youtube.com/watch?v=ppKpwtGy8KQ">video recording</a></li>
+<li>Section 1-3 and 4.1 in Aki’s case study “Birthdays workflow example” (<a href="https://users.aalto.fi/~ave/casestudies/Birthdays/birthdays.html" class="uri">https://users.aalto.fi/~ave/casestudies/Birthdays/birthdays.html</a>)</li>
+<li>A talk on “An introduction to Bayesian multilevel modeling with <code>brms</code>” by Paul-Christian Bürkner at Generable: <a href="https://www.youtube.com/watch?v=1qeXD4NQ4To">video recording</a></li>
 </ul>
 </section>
 </section>
@@ -269,7 +272,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="recommended-resources-for-next-session-1" class="level5">
 <h5 class="anchored" data-anchor-id="recommended-resources-for-next-session-1">Recommended Resources for Next Session</h5>
 <ul>
-<li>A talk on iterative model building and Bayesian workflows by Aki Vehtari: <a href="https://www.youtube.com/watch?v=ppKpwtGy8KQ">video recording</a></li>
+<li><a href="https://avehtari.github.io/BDA_R_demos/demos_rstan/brms_demo.html">BRMS demo for generating from prior</a></li>
+<li><a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations">Stan prior choice recommendations</a></li>
+<li><a href="https://rok-cesnovar.github.io/stan-distributions/">Stan distribution visualiser</a></li>
+<li><a href="https://distribution-explorer.github.io/">Distribution explorer</a></li>
+<li><a href="https://preliz.readthedocs.io/en/latest/">PreliZ</a></li>
+<li><a href="https://mc-stan.org/bayesplot/"><code>bayesplot</code> package</a></li>
+<li>A talk on “Why not to be afraid of priors (too much)” by Paul-Christian Bürkner at Bayes@Lund 2018: <a href="https://bayesat.github.io/lund2018/slides/paul_burkner_prior_slides.pdf">slides</a> <a href="https://www.youtube.com/watch?v=Uz9r8eV2erQ">video recording</a></li>
 </ul>
 </section>
 </section>
@@ -303,7 +312,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="recommended-resources-for-next-session-2" class="level5">
 <h5 class="anchored" data-anchor-id="recommended-resources-for-next-session-2">Recommended Resources for Next Session</h5>
 <ul>
-<li>A talk on “Why not to be afraid of priors (too much)” by Paul-Christian Bürkner at Bayes@Lund 2018: <a href="https://bayesat.github.io/lund2018/slides/paul_burkner_prior_slides.pdf">slides</a> <a href="https://www.youtube.com/watch?v=Uz9r8eV2erQ">video recording</a></li>
+<li>Aki’s case studies: <a href="https://users.aalto.fi/~ave/modelselection/diabetes.html">diabetes</a>, <a href="https://users.aalto.fi/~ave/modelselection/roaches.html">roaches</a>, <a href="https://users.aalto.fi/~ave/casestudies/Birthdays/birthdays.html">birthdays</a>, and <a href="https://users.aalto.fi/~ave/casestudies/Nabiximols/nabiximols.html">nabiximols</a></li>
+<li><a href="https://link.springer.com/article/10.1007/s11222-022-10090-6">Säilynoja et al.&nbsp;(2022); Calibration checks</a></li>
+<li><a href="https://link.springer.com/article/10.1007/s11222-023-10366-5">Kallioinen et al.&nbsp;(2023); Power-scaling sensitivity checks</a></li>
+<li><a href="https://link.springer.com/article/10.1007/s11222-016-9696-4">Vehtari et al.&nbsp;(2016); Approximate leave-one-out CV</a></li>
 </ul>
 </section>
 </section>
@@ -330,6 +342,12 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="recommended-resources-for-next-session-3" class="level5">
 <h5 class="anchored" data-anchor-id="recommended-resources-for-next-session-3">Recommended Resources for Next Session</h5>
+<ul>
+<li><a href="https://users.aalto.fi/~ave/CV-FAQ.html">Aki’s Cross-Validation FAQ</a></li>
+<li>Aki’s case study on <a href="https://users.aalto.fi/~ave/casestudies/Nabiximols/nabiximols.html">nabiximols</a></li>
+<li><a href="https://arxiv.org/abs/2404.01688">Riha et al.&nbsp;(2024); Bayesian Multiverse</a></li>
+<li><a href="https://research.aalto.fi/en/publications/comparison-of-bayesian-predictive-methods-for-model-selection">Piironen &amp; Vehtari (2017); Bayesian model selection</a></li>
+</ul>
 </section>
 </section>
 <section id="session-5-extending-models-and-model-selection" class="level3">
@@ -393,9 +411,6 @@ ul.task-list li input[type="checkbox"] {
 <li>e.g., Multiverse analysis</li>
 </ul></li>
 </ul>
-</section>
-<section id="recommended-resources-for-next-session-5" class="level5">
-<h5 class="anchored" data-anchor-id="recommended-resources-for-next-session-5">Recommended Resources for Next Session</h5>
 </section>
 </section>
 <section id="session-7-summary-presentations" class="level3">
