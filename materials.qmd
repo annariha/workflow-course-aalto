@@ -4,7 +4,7 @@ title: "Course Schedule and Content 2024"
 
 # Schedule Overview
 
-The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:15-16:00 in R030/A133 T5.
+The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:15-16:00 in R030/A133 T5 in CS building.
 
 |  | Seminar Slides | Date |
 |---------|:-----|:------:|
@@ -13,8 +13,8 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 | Session 3 | [Slides](slides/session3.pdf) | 06 May 2024 |
 | Session 4 | [Slides](slides/session4.pdf) [Example](examples/Session4Example.html) [Example Source](examples/Session4Example.qmd) | 13 May 2024 |
 | Session 5 | [Slides](slides/session5.pdf) | 20 May 2024 |
-| Session 6 | Slides | 27 May 2024 |
-| Session 7 | Slides | 3 June 2024 |
+| Session 6 | [Slides](slides/session6.pdf) | 27 May 2024 |
+| Session 7 | Final presentations | 3 June 2024 |
 
 # Schedule Detail
 
@@ -41,6 +41,9 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 ##### Recommended Resources for Next Session
 
   - A preprint on "Bayesian Workflow" by Gelman et al. (2020) [arXiv]( https://arxiv.org/abs/2011.01808)
+  - A talk on iterative model building and Bayesian workflows by Aki Vehtari: [video recording](https://www.youtube.com/watch?v=ppKpwtGy8KQ)
+  - Section 1-3 and 4.1 in Aki's case study "Birthdays workflow example" (<https://users.aalto.fi/~ave/casestudies/Birthdays/birthdays.html>)
+  - A talk on "An introduction to Bayesian multilevel modeling with `brms`" by Paul-Christian Bürkner at Generable: [video recording](https://www.youtube.com/watch?v=1qeXD4NQ4To)
 
 ### Session 2: Choosing an Initial Model
 
@@ -61,8 +64,14 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 
 ##### Recommended Resources for Next Session
 
-  - A talk on iterative model building and Bayesian workflows by Aki Vehtari: [video recording](https://www.youtube.com/watch?v=ppKpwtGy8KQ)
-
+  - [BRMS demo for generating from prior](https://avehtari.github.io/BDA_R_demos/demos_rstan/brms_demo.html)
+  - [Stan prior choice recommendations](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+  - [Stan distribution visualiser](https://rok-cesnovar.github.io/stan-distributions/)
+  - [Distribution explorer](https://distribution-explorer.github.io/)
+  - [PreliZ](https://preliz.readthedocs.io/en/latest/)
+  - [`bayesplot` package](https://mc-stan.org/bayesplot/)
+  - A talk on "Why not to be afraid of priors (too much)" by Paul-Christian Bürkner at Bayes@Lund 2018: [slides](https://bayesat.github.io/lund2018/slides/paul_burkner_prior_slides.pdf) [video recording](https://www.youtube.com/watch?v=Uz9r8eV2erQ)
+  
 ### Session 3: Prior Choices
 
 ##### Learning Outcomes for the Session
@@ -84,8 +93,11 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 
 ##### Recommended Resources for Next Session
 
-  - A talk on "Why not to be afraid of priors (too much)" by Paul-Christian Bürkner at Bayes@Lund 2018: [slides](https://bayesat.github.io/lund2018/slides/paul_burkner_prior_slides.pdf) [video recording](https://www.youtube.com/watch?v=Uz9r8eV2erQ)
-  
+  - Aki's case studies: [diabetes](https://users.aalto.fi/~ave/modelselection/diabetes.html), [roaches](https://users.aalto.fi/~ave/modelselection/roaches.html), [birthdays](https://users.aalto.fi/~ave/casestudies/Birthdays/birthdays.html), and [nabiximols](https://users.aalto.fi/~ave/casestudies/Nabiximols/nabiximols.html)
+  - [Säilynoja et al. (2022); Calibration checks](https://link.springer.com/article/10.1007/s11222-022-10090-6)
+  - [Kallioinen et al. (2023); Power-scaling sensitivity checks](https://link.springer.com/article/10.1007/s11222-023-10366-5)
+  - [Vehtari et al. (2016); Approximate leave-one-out CV](https://link.springer.com/article/10.1007/s11222-016-9696-4)
+
 ### Session 4: Model Checking: Posterior Predictive Checks & Calibration
 
 ##### Learning Outcomes for the Session
@@ -102,6 +114,11 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
     - Calibration
 
 ##### Recommended Resources for Next Session
+
+  - [Aki's Cross-Validation FAQ](https://users.aalto.fi/~ave/CV-FAQ.html)
+  - Aki's case study on [nabiximols](https://users.aalto.fi/~ave/casestudies/Nabiximols/nabiximols.html)
+  - [Riha et al. (2024); Bayesian Multiverse](https://arxiv.org/abs/2404.01688)
+  - [Piironen & Vehtari (2017); Bayesian model selection](https://research.aalto.fi/en/publications/comparison-of-bayesian-predictive-methods-for-model-selection)
 
 ### Session 5: Extending Models and Model Selection
 
@@ -143,8 +160,6 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
   - Prior sensitivity for final conclusions (quantities/choices not sensitive to priors)
   - Brief introduction to alternative methods for constructing and reporting alternative models
     - e.g., Multiverse analysis
-
-##### Recommended Resources for Next Session
 
 ### Session 7: Summary & Presentations
 
