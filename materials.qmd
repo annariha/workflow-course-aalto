@@ -64,11 +64,14 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 
 ##### Recommended Resources for Next Session
 
-  - [BRMS demo for generating from prior](https://avehtari.github.io/BDA_R_demos/demos_rstan/brms_demo.html)
+  - [`brms` demo for generating from prior](https://avehtari.github.io/BDA_R_demos/demos_rstan/brms_demo.html)
   - [Stan prior choice recommendations](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
+  - [Prior DB](https://n-kall.github.io/priorDB/)
+  - [Documentation of `brms::set_prior()`](http://paulbuerkner.com/brms/reference/set_prior.html) on how to set priors in `brms`
   - [Stan distribution visualiser](https://rok-cesnovar.github.io/stan-distributions/)
   - [Distribution explorer](https://distribution-explorer.github.io/)
-  - [PreliZ](https://preliz.readthedocs.io/en/latest/)
+  - Visualising the R2D2 prior components with Sölvi Rögnvaldsson's [shinyApp](https://solviro.shinyapps.io/R2D2_shiny/)
+  - Prior elicitation with [PreliZ](https://preliz.readthedocs.io/en/latest/)
   - [`bayesplot` package](https://mc-stan.org/bayesplot/)
   - A talk on "Why not to be afraid of priors (too much)" by Paul-Christian Bürkner at Bayes@Lund 2018: [slides](https://bayesat.github.io/lund2018/slides/paul_burkner_prior_slides.pdf) [video recording](https://www.youtube.com/watch?v=Uz9r8eV2erQ)
   
@@ -117,7 +120,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 
   - [Aki's Cross-Validation FAQ](https://users.aalto.fi/~ave/CV-FAQ.html)
   - Aki's case study on [nabiximols](https://users.aalto.fi/~ave/casestudies/Nabiximols/nabiximols.html)
-  - [Riha et al. (2024); Bayesian Multiverse](https://arxiv.org/abs/2404.01688)
+  - [Riha et al. (2024); Filtering multiple candidate models](https://arxiv.org/abs/2404.01688)
   - [Piironen & Vehtari (2017); Bayesian model selection](https://research.aalto.fi/en/publications/comparison-of-bayesian-predictive-methods-for-model-selection)
 
 ### Session 5: Extending Models and Model Selection
