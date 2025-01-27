@@ -16,8 +16,12 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 | Session 6 | [Slides](slides/session6.pdf) | 27 May 2024 |
 | Session 7 | Final presentations | 3 June 2024 |
 
-# Schedule Detail
+# Pre-course resources 
 
+  - Introduction to Probabilistic Programming in `R` by Leo Lahti et al. (using Stan) ([Online course](https://carpentries-incubator.github.io/statistical-probabilistic-programming-r/))
+  
+# Schedule Detail & Resources 
+  
 ### Session 1: Introduction to Bayesian Workflows
 
 ##### Learning Outcomes for the Session
@@ -40,7 +44,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 
 ##### Recommended Resources for Next Session
 
-  - A preprint on "Bayesian Workflow" by Gelman et al. (2020) [arXiv]( https://arxiv.org/abs/2011.01808)
+  - Gelman et al. (2020). Bayesian workflow. [arXiv]( https://arxiv.org/abs/2011.01808)
   - A talk on iterative model building and Bayesian workflows by Aki Vehtari: [video recording](https://www.youtube.com/watch?v=ppKpwtGy8KQ)
   - Section 1-3 and 4.1 in Aki's case study "Birthdays workflow example" (<https://users.aalto.fi/~ave/casestudies/Birthdays/birthdays.html>)
   - A talk on "An introduction to Bayesian multilevel modeling with `brms`" by Paul-Christian Bürkner at Generable: [video recording](https://www.youtube.com/watch?v=1qeXD4NQ4To)
@@ -171,4 +175,3 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
   - Awareness of how workflow will differ between research questions
   - Reflection of how workflow contributed to analysis process
   - Reflection on future iterations of model
-
