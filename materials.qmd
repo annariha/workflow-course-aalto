@@ -19,6 +19,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 # Pre-course resources 
 
   - Introduction to Probabilistic Programming in `R` by Leo Lahti et al. (using Stan) ([Online course](https://carpentries-incubator.github.io/statistical-probabilistic-programming-r/))
+  - Michael Franke's `brms` [cheat sheet](https://michael-franke.github.io/Bayesian-Regression/practice-sheets/11a-cheat-sheet.html)
   
 # Schedule Detail & Resources 
   
@@ -70,7 +71,7 @@ The course is taught in period V (22 April – 3 June 2024) on Mondays from 14:1
 
   - [`brms` demo for generating from prior](https://avehtari.github.io/BDA_R_demos/demos_rstan/brms_demo.html)
   - [Stan prior choice recommendations](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations)
-  - [Prior DB](https://n-kall.github.io/priorDB/)
+  - Ever-extending prior database ([priorDB](https://n-kall.github.io/priorDB/))
   - [Documentation of `brms::set_prior()`](http://paulbuerkner.com/brms/reference/set_prior.html) on how to set priors in `brms`
   - [Stan distribution visualiser](https://rok-cesnovar.github.io/stan-distributions/)
   - [Distribution explorer](https://distribution-explorer.github.io/)
